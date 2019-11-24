@@ -6,7 +6,7 @@ parser = argparse.ArgumentParser()
 parser.add_argument("integers",type=int,nargs = 4)
 args = parser.parse_args()
 
-os.system('(cd ../GetStarted/ && make)')
+os.system('make')
 def find_log_size(num):
 	start = math.log(num, 2)
 
@@ -19,11 +19,11 @@ m = args.integers[1]
 width = args.integers[2]
 t = args.integers[3]
 
-const_file_command = './../GetStarted/testgen 1 ' + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
+const_file_command = './testgen 1 ' + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
 os.system(const_file_command)
 
 const_file_name = 'const_' + str(n) + '_' + str(m) + '_' + str(width) + '_' + str(t) + '.txt'
-generate_rom_command = './../GetStarted/gen 1 ' + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t) + " " + const_file_name
+generate_rom_command = './gen 1 ' + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t) + " " + const_file_name
 os.system(generate_rom_command)
 
 addrx = find_log_size(n)
@@ -31,16 +31,30 @@ addrf = find_log_size(m)
 
 sModname_rom = "conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t) + "_f_rom"
 sModname_gen = "conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t)
+
 #get template
-'''
 with open('templete.sv', 'r') as file:
     templete = file.read()
 
 #get rom 
-with open('rom.txt', 'r') as file:
-    rom = file.read()
+romname = 'conv_' + str(n) + '_' + str(m) + '_' + str(width) + '_' + str(t) + '.sv'
+i = 0
+sRom = ''
+with open(romname, 'r') as file:
+    rom = file.readline()
+    i = 1
+    while rom:
+      rom = file.readline()
+      i += 1
+      if (i > 4):
+        sRom += rom 
+print sRom
 
-templete = templete.replace('$$ROM$$', rom).replace('$WIDTH$', str(width)).replace('$ADDRX$', str(addrx)).replace('$ADDRF$', str(addrf))
+templete = templete.replace('$$ROM$$', sRom).replace('$WIDTH$', str(width)).replace('$ADDRX$', str(addrx)).replace('$ADDRF$', str(addrf))
 templete = templete.replace('$N$', str(n)).replace('$M$', str(m))
 templete = templete.replace('$rommodname$', sModname_rom).replace('$modnamegen$', sModname_gen)
-print(templete)'''
+
+
+outputfile = open(romname, 'w')
+outputfile.write(templete)
+#print templete
