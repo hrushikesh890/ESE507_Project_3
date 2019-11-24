@@ -92,12 +92,13 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
 endmodule
 
 module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_done_x, m_valid_y, m_ready_y, en_acc, clr_acc);
+  parameter ADDR_X = 3, ADDR_F = 2; 
   input reset, clk, read_done_x, m_ready_y;
-  output logic [2:0] m_addr_read_x;
-  output logic [1:0] m_addr_read_f;
+  output logic [ADDR_X-1:0] m_addr_read_x;
+  output logic [ADDR_F-1:0] m_addr_read_f;
   output logic conv_done, m_valid_y, en_acc, clr_acc;
   logic hold_state, en_val_y;
-  logic [2:0] number_x;
+  logic [ADDR_X-1:0] number_x;
 
   always_ff @(posedge clk) begin
     if (reset == 1) begin
@@ -118,14 +119,14 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         m_addr_read_x <= m_addr_read_x + 1;
         m_addr_read_f <= m_addr_read_f + 1;
       end
-      if ((m_addr_read_f == 3) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
+      if ((m_addr_read_f == (2**ADDR_F - 1)) && (hold_state == 0) && en_val_y == 0 && m_valid_y == 0) begin
         m_addr_read_x <= number_x;
         number_x <= number_x + 1;
         m_addr_read_f <= 0;
         en_val_y <= 1;
         //en_acc <= 0;
       end
-      if ((number_x == 5) && (m_addr_read_f == 3) && hold_state != 1) begin
+      if ((number_x == (2**ADDR_X - 1)) && (m_addr_read_f == (2**ADDR_F - 1)) && hold_state != 1) begin
         conv_done <= 1;
         en_acc <= 0;        
         m_addr_read_x <= 0;
@@ -158,10 +159,11 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
 endmodule
 
 module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_acc, clr_acc, m_data_x, m_data_f);
+  parameter ADDR_X = 3, ADDR_F = 2; 
   import get_max::*;
   input clk, reset, en_acc, clr_acc;
-  input [2:0] m_addr_read_x;
-  input [1:0] m_addr_read_f;
+  input [ADDR_X-1:0] m_addr_read_x;
+  input [ADDR_F-1:0] m_addr_read_f;
   output logic signed [7:0] m_data_out_y;
   input signed [7:0] m_data_x;
   input signed [7:0] m_data_f;
