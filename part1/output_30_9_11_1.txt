@@ -1,0 +1,945 @@
+
+                      Design Compiler Graphical
+                            DC Ultra (TM)
+                             DFTMAX (TM)
+                         Power Compiler (TM)
+                           DesignWare (R)
+                           DC Expert (TM)
+                         Design Vision (TM)
+                          HDL Compiler (TM)
+                         VHDL Compiler (TM)
+                            DFT Compiler
+                        Library Compiler (TM)
+                         Design Compiler(R)
+
+         Version J-2014.09-SP5-2 for RHEL64 -- Jul 11, 2015
+               Copyright (c) 1988-2015 Synopsys, Inc.
+
+This software and the associated documentation are confidential and 
+proprietary to Synopsys, Inc. Your use or disclosure of this software 
+is subject to the terms and conditions of a written license agreement 
+between you, or your company, and Synopsys, Inc.
+
+Initializing...
+##############################################
+# Setup: fill out the following parameters: name of clock signal, clock period (ns),
+# reset signal name (if used), name of top-level module, name of source file
+set CLK_NAME "clk";
+clk
+set CLK_PERIOD 1;
+1
+set RST_NAME "reset";
+reset
+set TOP_MOD_NAME "conv_30_9_11_1";
+conv_30_9_11_1
+set SRC_FILE "conv_30_9_11_1.sv";
+conv_30_9_11_1.sv
+# If you have multiple source files, change the line above to list them all like this:
+# set SRC_FILE [list "file1.sv" "file2.sv"];
+###############################################
+source setupdc.tcl
+NangateOpenCellLibrary_typical.db dw_foundation.sldb
+file mkdir work_synth
+define_design_lib WORK -path work_synth
+1
+analyze $SRC_FILE -format sverilog
+Running PRESTO HDLC
+Searching for ./conv_30_9_11_1.sv
+Compiling source file ./conv_30_9_11_1.sv
+Warning:  ./conv_30_9_11_1.sv:169: The construct 'declaration initial assignment' is not supported in synthesis; it is ignored. (VER-708)
+Warning:  ./conv_30_9_11_1.sv:170: The construct 'declaration initial assignment' is not supported in synthesis; it is ignored. (VER-708)
+Presto compilation completed successfully.
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/dw_foundation.sldb'
+1
+elaborate -work WORK $TOP_MOD_NAME
+Loading db file '/usr/local/synopsys/syn/libraries/syn/gtech.db'
+Loading db file '/usr/local/synopsys/syn/libraries/syn/standard.sldb'
+  Loading link library 'NangateOpenCellLibrary'
+  Loading link library 'gtech'
+Running PRESTO HDLC
+Presto compilation completed successfully.
+Elaborated 1 design.
+Current design is now 'conv_30_9_11_1'.
+Information: Building the design 'memory' instantiated from design 'conv_30_9_11_1' with
+	the parameters "11,30,5". (HDL-193)
+
+Inferred memory devices in process
+	in routine memory_WIDTH11_SIZE30_LOGSIZE5 line 28 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    data_out_reg     | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+|       mem_reg       | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Statistics for MUX_OPs
+============================================================================
+|         block name/line           | Inputs | Outputs | # sel inputs | MB |
+============================================================================
+| memory_WIDTH11_SIZE30_LOGSIZE5/29 |   32   |   11    |      5       | N  |
+============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'conv_30_9_11_1_f_rom'. (HDL-193)
+Warning:  ./conv_30_9_11_1.sv:7: unsigned to signed assignment occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:8: unsigned to signed assignment occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:9: unsigned to signed assignment occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:11: unsigned to signed assignment occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:12: unsigned to signed assignment occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:13: unsigned to signed assignment occurs. (VER-318)
+
+Statistics for case statements in always block at line 5 in file
+	'./conv_30_9_11_1.sv'
+===============================================
+|           Line           |  full/ parallel  |
+===============================================
+|            6             |     no/auto      |
+===============================================
+
+Inferred memory devices in process
+	in routine conv_30_9_11_1_f_rom line 5 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|        z_reg        | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'memory_control_xf' instantiated from design 'conv_30_9_11_1' with
+	the parameters "5,30". (HDL-193)
+Warning:  ./conv_30_9_11_1.sv:83: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE5_SIZE30 line 61 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    m_addr_x_reg     | Flip-flop |   5   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine memory_control_xf_LOGSIZE5_SIZE30 line 74 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|    read_done_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    overflow_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'conv_control' instantiated from design 'conv_30_9_11_1' with
+	the parameters "5,4,30,9". (HDL-193)
+Warning:  ./conv_30_9_11_1.sv:118: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:125: signed to unsigned conversion occurs. (VER-318)
+Warning:  ./conv_30_9_11_1.sv:125: signed to unsigned conversion occurs. (VER-318)
+
+Inferred memory devices in process
+	in routine conv_control_ADDR_X5_ADDR_F4_LENX30_LENF9 line 99 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   hold_state_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|  m_addr_read_f_reg  | Flip-flop |   4   |  Y  | N  | N  | N  | N  | N  | N  |
+|  m_addr_read_x_reg  | Flip-flop |   5   |  Y  | N  | N  | N  | N  | N  | N  |
+|    conv_done_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    m_valid_y_reg    | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|     en_acc_reg      | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|     clr_acc_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+|    number_x_reg     | Flip-flop |   5   |  Y  | N  | N  | N  | N  | N  | N  |
+|    en_val_y_reg     | Flip-flop |   1   |  N  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+Information: Building the design 'convolutioner' instantiated from design 'conv_30_9_11_1' with
+	the parameters "11,5,4". (HDL-193)
+
+Inferred memory devices in process
+	in routine convolutioner_WIDTH11_ADDR_X5_ADDR_F4 line 206 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|   prev_output_reg   | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+
+Inferred memory devices in process
+	in routine convolutioner_WIDTH11_ADDR_X5_ADDR_F4 line 215 in file
+		'./conv_30_9_11_1.sv'.
+===============================================================================
+|    Register Name    |   Type    | Width | Bus | MB | AR | AS | SR | SS | ST |
+===============================================================================
+|  m_data_out_y_reg   | Flip-flop |  11   |  Y  | N  | N  | N  | N  | N  | N  |
+===============================================================================
+Presto compilation completed successfully.
+1
+###### CLOCKS AND PORTS #######
+set CLK_PORT [get_ports $CLK_NAME]
+{clk}
+set TMP1 [remove_from_collection [all_inputs] $CLK_PORT]
+{reset s_data_in_x[10] s_data_in_x[9] s_data_in_x[8] s_data_in_x[7] s_data_in_x[6] s_data_in_x[5] s_data_in_x[4] s_data_in_x[3] s_data_in_x[2] s_data_in_x[1] s_data_in_x[0] s_valid_x m_ready_y}
+set INPUTS [remove_from_collection $TMP1 $RST_NAME]
+{s_data_in_x[10] s_data_in_x[9] s_data_in_x[8] s_data_in_x[7] s_data_in_x[6] s_data_in_x[5] s_data_in_x[4] s_data_in_x[3] s_data_in_x[2] s_data_in_x[1] s_data_in_x[0] s_valid_x m_ready_y}
+create_clock -period $CLK_PERIOD [get_ports clk]
+1
+# set delay for inputs to be 0.2ns
+set_input_delay 0.2 -max -clock clk $INPUTS
+1
+set_output_delay 0.2 -max -clock clk [all_outputs]
+1
+###### OPTIMIZATION #######
+set_max_area 0 
+1
+###### RUN #####
+compile_ultra
+Information: Performing power optimization. (PWR-850)
+Alib files are up-to-date.
+Information: Evaluating DesignWare library utilization. (UISN-27)
+
+============================================================================
+| DesignWare Building Block Library  |         Version         | Available |
+============================================================================
+| Basic DW Building Blocks           | J-2014.09-DWBB_201409.5.2 |   *     |
+| Licensed DW Building Blocks        | J-2014.09-DWBB_201409.5.2 |   *     |
+============================================================================
+
+Information: Sequential output inversion is enabled.  SVF file must be used for formal verification. (OPT-1208)
+
+Information: There are 13 potential problems in your design. Please run 'check_design' for more information. (LINT-99)
+
+
+Loaded alib file './alib-52/NangateOpenCellLibrary_typical.db.alib'
+  Building model 'DW01_NAND2'
+Information: Ungrouping hierarchy mx before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy mf before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy cx before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy cc before Pass 1 (OPT-776)
+Information: Ungrouping hierarchy conv before Pass 1 (OPT-776)
+Information: Ungrouping 5 of 6 hierarchies before Pass 1 (OPT-775)
+Information: State dependent leakage is now switched from on to off.
+
+  Beginning Pass 1 Mapping
+  ------------------------
+  Processing 'conv_30_9_11_1'
+Information: Added key list 'DesignWare' to design 'conv_30_9_11_1'. (DDB-72)
+Information: In design 'conv_30_9_11_1', the register 'cx/read_done_reg' is removed because it is merged to 'cx/overflow_reg'. (OPT-1215)
+Information: In design 'conv_30_9_11_1', the register 'mf/z_reg[9]' is removed because it is merged to 'mf/z_reg[10]'. (OPT-1215)
+Information: In design 'conv_30_9_11_1', the register 'mf/z_reg[8]' is removed because it is merged to 'mf/z_reg[10]'. (OPT-1215)
+Information: In design 'conv_30_9_11_1', the register 'mf/z_reg[7]' is removed because it is merged to 'mf/z_reg[10]'. (OPT-1215)
+Information: In design 'conv_30_9_11_1', the register 'mf/z_reg[6]' is removed because it is merged to 'mf/z_reg[10]'. (OPT-1215)
+Information: In design 'conv_30_9_11_1', the register 'mf/z_reg[5]' is removed because it is merged to 'mf/z_reg[10]'. (OPT-1215)
+ Implement Synthetic for 'conv_30_9_11_1'.
+
+  Updating timing information
+Information: Updating design information... (UID-85)
+Information: The register 'conv/m_data_out_y_reg[10]' is a constant and will be removed. (OPT-1206)
+
+  Beginning Mapping Optimizations  (Ultra High effort)
+  -------------------------------
+  Mapping Optimization (Phase 1)
+Information: The register 'mx/data_out_reg[8]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[7]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[0]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[1]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[2]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[9]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[10]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[3]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[4]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[5]' will be removed. (OPT-1207)
+Information: The register 'mx/data_out_reg[6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[5][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[15][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[14][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[22][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[23][10]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[2]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[29][10]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[0]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[3]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[4]' will be removed. (OPT-1207)
+Information: The register 'mf/z_reg[10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[0][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[1][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[2][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[3][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[4][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[6][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[7][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[8][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[16][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[24][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[10][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[18][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[26][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[12][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[20][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[28][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[9][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[17][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[25][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[11][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[19][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[27][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[13][10]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][0]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][1]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][2]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][3]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][4]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][5]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][6]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][7]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][8]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][9]' will be removed. (OPT-1207)
+Information: The register 'mx/mem_reg[21][10]' will be removed. (OPT-1207)
+Information: The register 'cc/m_addr_read_x_reg[0]' will be removed. (OPT-1207)
+Information: The register 'cc/m_addr_read_x_reg[3]' will be removed. (OPT-1207)
+Information: The register 'cc/m_addr_read_x_reg[2]' will be removed. (OPT-1207)
+Information: The register 'cc/m_addr_read_x_reg[1]' will be removed. (OPT-1207)
+Information: The register 'cc/m_addr_read_x_reg[4]' will be removed. (OPT-1207)
+Information: The register 'conv/prev_output_reg[2]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[4]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[0]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[1]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[3]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[5]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[6]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[7]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[8]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[9]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/prev_output_reg[10]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[8]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[7]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[6]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[5]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[4]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[3]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[2]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[1]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[0]' is a constant and will be removed. (OPT-1206)
+Information: The register 'conv/m_data_out_y_reg[9]' is a constant and will be removed. (OPT-1206)
+Information: The register 'cc/clr_acc_reg' will be removed. (OPT-1207)
+Information: The register 'cc/en_acc_reg' will be removed. (OPT-1207)
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:06     179.5      0.00       0.0       0.0                           3813.0352
+    0:00:06     179.5      0.00       0.0       0.0                           3813.0352
+    0:00:06     179.5      0.00       0.0       0.0                           3813.0352
+    0:00:06     179.5      0.00       0.0       0.0                           3813.0352
+  Re-synthesis Optimization (Phase 1)
+  Re-synthesis Optimization (Phase 2)
+  Global Optimization (Phase 1)
+  Global Optimization (Phase 2)
+  Global Optimization (Phase 3)
+  Global Optimization (Phase 4)
+  Global Optimization (Phase 5)
+  Global Optimization (Phase 6)
+  Global Optimization (Phase 7)
+  Global Optimization (Phase 8)
+  Global Optimization (Phase 9)
+  Global Optimization (Phase 10)
+  Global Optimization (Phase 11)
+  Global Optimization (Phase 12)
+  Global Optimization (Phase 13)
+  Global Optimization (Phase 14)
+  Global Optimization (Phase 15)
+  Global Optimization (Phase 16)
+  Global Optimization (Phase 17)
+  Global Optimization (Phase 18)
+  Global Optimization (Phase 19)
+  Global Optimization (Phase 20)
+  Global Optimization (Phase 21)
+  Global Optimization (Phase 22)
+  Global Optimization (Phase 23)
+  Global Optimization (Phase 24)
+  Global Optimization (Phase 25)
+  Global Optimization (Phase 26)
+  Global Optimization (Phase 27)
+  Global Optimization (Phase 28)
+  Global Optimization (Phase 29)
+  Global Optimization (Phase 30)
+
+
+
+  Beginning Delay Optimization Phase
+  ----------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+
+  Beginning Delay Optimization
+  ----------------------------
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+
+
+  Beginning Leakage Power Optimization  (max_leakage_power 0)
+  ------------------------------------
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+  Global Optimization (Phase 31)
+  Global Optimization (Phase 32)
+  Global Optimization (Phase 33)
+  Global Optimization (Phase 34)
+  Global Optimization (Phase 35)
+  Global Optimization (Phase 36)
+  Global Optimization (Phase 37)
+  Global Optimization (Phase 38)
+  Global Optimization (Phase 39)
+  Global Optimization (Phase 40)
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+
+                                  TOTAL                                                
+   ELAPSED            WORST NEG   SETUP    DESIGN                              LEAKAGE 
+    TIME      AREA      SLACK     COST    RULE COST         ENDPOINT            POWER  
+  --------- --------- --------- --------- --------- ------------------------- ---------
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+    0:00:06     165.5      0.00       0.0       0.0                           3339.1565
+Loading db file '/home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db'
+
+
+Note: Symbol # after min delay cost means estimated hold TNS across all active scenarios 
+
+
+  Optimization Complete
+  ---------------------
+Information: State dependent leakage is now switched from off to on.
+Information: Propagating switching activity (low effort zero delay simulation). (PWR-6)
+1
+report_area
+ 
+****************************************
+Report : area
+Design : conv_30_9_11_1
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 24 17:48:59 2019
+****************************************
+
+Information: Updating design information... (UID-85)
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+Number of ports:                           28
+Number of nets:                           129
+Number of cells:                           98
+Number of combinational cells:             79
+Number of sequential cells:                19
+Number of macros/black boxes:               0
+Number of buf/inv:                         12
+Number of references:                      20
+
+Combinational area:                 79.534000
+Buf/Inv area:                        6.384000
+Noncombinational area:              85.917997
+Macro/Black Box area:                0.000000
+Net Interconnect area:      undefined  (Wire load has zero net area)
+
+Total cell area:                   165.451997
+Total area:                 undefined
+1
+report_power
+ 
+****************************************
+Report : power
+        -analysis_effort low
+Design : conv_30_9_11_1
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 24 17:48:59 2019
+****************************************
+
+
+Library(s) Used:
+
+    NangateOpenCellLibrary (File: /home/home4/pmilder/ese507/synthesis/lib/NangateOpenCellLibrary_typical.db)
+
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+Design        Wire Load Model            Library
+------------------------------------------------
+conv_30_9_11_1         5K_hvratio_1_1    NangateOpenCellLibrary
+
+
+Global Operating Voltage = 1.1  
+Power-specific unit information :
+    Voltage Units = 1V
+    Capacitance Units = 1.000000ff
+    Time Units = 1ns
+    Dynamic Power Units = 1uW    (derived from V,C,T units)
+    Leakage Power Units = 1nW
+
+
+  Cell Internal Power  = 135.6643 uW   (91%)
+  Net Switching Power  =  12.6674 uW    (9%)
+                         ---------
+Total Dynamic Power    = 148.3317 uW  (100%)
+
+Cell Leakage Power     =   3.3969 uW
+
+
+                 Internal         Switching           Leakage            Total
+Power Group      Power            Power               Power              Power   (   %    )  Attrs
+--------------------------------------------------------------------------------------------------
+io_pad             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+memory             0.0000            0.0000            0.0000            0.0000  (   0.00%)
+black_box          0.0000            0.0000            0.0000            0.0000  (   0.00%)
+clock_network      0.0000            0.0000            0.0000            0.0000  (   0.00%)
+register         129.0100            3.3638        1.4585e+03          133.8323  (  88.21%)
+sequential         0.0000            0.0000            0.0000            0.0000  (   0.00%)
+combinational      6.6543            9.3036        1.9383e+03           17.8963  (  11.79%)
+--------------------------------------------------------------------------------------------------
+Total            135.6643 uW        12.6674 uW     3.3969e+03 nW       151.7286 uW
+1
+report_timing
+ 
+****************************************
+Report : timing
+        -path full
+        -delay max
+        -max_paths 1
+Design : conv_30_9_11_1
+Version: J-2014.09-SP5-2
+Date   : Sun Nov 24 17:48:59 2019
+****************************************
+
+Operating Conditions: typical   Library: NangateOpenCellLibrary
+Wire Load Model Mode: top
+
+  Startpoint: cc/m_addr_read_f_reg[2]
+              (rising edge-triggered flip-flop clocked by clk)
+  Endpoint: cc/m_addr_read_f_reg[3]
+            (rising edge-triggered flip-flop clocked by clk)
+  Path Group: clk
+  Path Type: max
+
+  Des/Clust/Port     Wire Load Model       Library
+  ------------------------------------------------
+  conv_30_9_11_1     5K_hvratio_1_1        NangateOpenCellLibrary
+
+  Point                                    Incr       Path
+  -----------------------------------------------------------
+  clock clk (rise edge)                    0.00       0.00
+  clock network delay (ideal)              0.00       0.00
+  cc/m_addr_read_f_reg[2]/CK (DFF_X1)      0.00       0.00 r
+  cc/m_addr_read_f_reg[2]/Q (DFF_X1)       0.08       0.08 f
+  U1225/ZN (NOR2_X1)                       0.04       0.12 r
+  U1226/ZN (NAND4_X1)                      0.05       0.17 f
+  U1227/ZN (OR4_X1)                        0.11       0.29 f
+  U1228/ZN (NOR3_X1)                       0.08       0.37 r
+  U1229/ZN (NOR2_X1)                       0.06       0.42 f
+  U1232/ZN (NAND2_X1)                      0.08       0.50 r
+  U1233/ZN (INV_X1)                        0.05       0.55 f
+  U1236/ZN (AOI221_X1)                     0.11       0.66 r
+  U1237/ZN (INV_X1)                        0.02       0.69 f
+  U1238/ZN (AOI21_X1)                      0.05       0.74 r
+  U1239/ZN (INV_X1)                        0.02       0.76 f
+  U1245/Z (MUX2_X1)                        0.06       0.83 f
+  cc/m_addr_read_f_reg[3]/D (DFF_X1)       0.01       0.83 f
+  data arrival time                                   0.83
+
+  clock clk (rise edge)                    1.00       1.00
+  clock network delay (ideal)              0.00       1.00
+  cc/m_addr_read_f_reg[3]/CK (DFF_X1)      0.00       1.00 r
+  library setup time                      -0.04       0.96
+  data required time                                  0.96
+  -----------------------------------------------------------
+  data required time                                  0.96
+  data arrival time                                  -0.83
+  -----------------------------------------------------------
+  slack (MET)                                         0.13
+
+
+1
+write -f verilog $TOP_MOD_NAME -output gates.v -hierarchy
+Writing verilog file '/home/home5/oswaln/nehul_ese507/Proj_3/ESE507_Project_3/part1/gates.v'.
+Warning: Verilog 'assign' or 'tran' statements are written out. (VO-4)
+1
+quit
+
+Thank you...
