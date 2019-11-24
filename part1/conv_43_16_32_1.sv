@@ -1,4 +1,30 @@
-$$ROM$$
+module conv_43_16_32_1_f_rom(clk, addr, z);
+   input clk;
+   input [3:0] addr;
+   output logic signed [31:0] z;
+   always_ff @(posedge clk) begin
+      case(addr)
+        0: z <= 32'd49608;
+        1: z <= -32'd59655;
+        2: z <= -32'd20292;
+        3: z <= 32'd34299;
+        4: z <= 32'd60463;
+        5: z <= -32'd36895;
+        6: z <= 32'd20813;
+        7: z <= 32'd23855;
+        8: z <= -32'd3831;
+        9: z <= -32'd62964;
+        10: z <= -32'd9540;
+        11: z <= 32'd22819;
+        12: z <= 32'd59094;
+        13: z <= 32'd57140;
+        14: z <= -32'd40789;
+        15: z <= 32'd38615;
+      endcase
+   end
+endmodule
+
+
 module memory(clk, data_in, data_out, addr, wr_en);
   parameter WIDTH=16, SIZE=64, LOGSIZE=6;
   input [WIDTH-1:0] data_in;
@@ -203,8 +229,8 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   end
 endmodule
 
-module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
-  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$;
+module conv_43_16_32_1(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
+  parameter WIDTH = 32, ADDRX = 6, ADDRF = 4, LENX = 43, LENF = 16;
   input clk, reset, s_valid_x, m_ready_y;
   input signed [WIDTH-1:0] s_data_in_x;
   output s_ready_x, m_valid_y;
@@ -227,7 +253,7 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   end
   memory #(WIDTH, LENX, ADDRX) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
 
-  $rommodname$ mf(.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
+  conv_43_16_32_1_f_rom mf(.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y));
 

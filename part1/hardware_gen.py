@@ -48,7 +48,6 @@ with open(romname, 'r') as file:
       i += 1
       if (i > 4):
         sRom += rom 
-print sRom
 
 templete = templete.replace('$$ROM$$', sRom).replace('$WIDTH$', str(width)).replace('$ADDRX$', str(addrx)).replace('$ADDRF$', str(addrf))
 templete = templete.replace('$N$', str(n)).replace('$M$', str(m))
@@ -57,4 +56,17 @@ templete = templete.replace('$rommodname$', sModname_rom).replace('$modnamegen$'
 
 outputfile = open(romname, 'w')
 outputfile.write(templete)
+outputfile.close()
+
+tbname = "tb_conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t) + ".sv"
+
+with open(tbname, 'r') as file:
+    tbfile = file.read()
+    
+writecontent = templete + "\n" + tbfile
+tbench = open(tbname, 'w')
+tbench.write(writecontent)
+
+'''sim_command = "./testlayer " + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
+os.system(sim_command)'''
 #print templete

@@ -1,19 +1,28 @@
 
-module conv_8_4_8_1 ( clk, reset, s_data_in_x, s_valid_x, s_ready_x, 
+module conv_16_4_16_1 ( clk, reset, s_data_in_x, s_valid_x, s_ready_x, 
         m_data_out_y, m_valid_y, m_ready_y );
-  input [7:0] s_data_in_x;
-  output [7:0] m_data_out_y;
+  input [15:0] s_data_in_x;
+  output [15:0] m_data_out_y;
   input clk, reset, s_valid_x, m_ready_y;
   output s_ready_x, m_valid_y;
-  wire   w_conv_done, \cx/overflow , \cc/hold_state , \cc/en_val_y , n208,
-         n276, n277, n278, n279, n280, n281, n282, n284, n285, n286, n288,
-         n289, n290, n291, n292, n293, n294, n295, n296, n297, n298, n299,
-         n300, n301, n302, n303, n304, n305, n306, n307, n308, n309, n310,
-         n311, n312, n313, n314, n315, n316, n317, n318, n319, n320, n321,
-         n322, n323, n324, n325, n326, n327, n328;
-  wire   [2:0] w_write_addr_x;
+  wire   \cx/overflow , \cc/hold_state , \cc/en_val_y , n611, n872, n873, n874,
+         n875, n876, n877, n878, n879, n880, n881, n882, n883, n884, n886,
+         n887, n888, n889, n890, n891, n892, n893, n894, n895, n896, n897,
+         n898, n899, n900, n901, n902, n903, n904, n905, n906, n907, n908,
+         n909, n910, n911, n912, n913, n914, n915, n916, n917, n918, n919,
+         n920, n921, n922, n923, n924, n925, n926, n927, n928, n929, n930,
+         n931, n932, n933, n934, n935, n936;
+  wire   [3:0] w_write_addr_x;
   wire   [1:0] w_read_addr_f;
-  wire   [2:0] \cc/number_x ;
+  wire   [3:0] \cc/number_x ;
+  assign m_data_out_y[15] = 1'b0;
+  assign m_data_out_y[14] = 1'b0;
+  assign m_data_out_y[13] = 1'b0;
+  assign m_data_out_y[12] = 1'b0;
+  assign m_data_out_y[11] = 1'b0;
+  assign m_data_out_y[10] = 1'b0;
+  assign m_data_out_y[9] = 1'b0;
+  assign m_data_out_y[8] = 1'b0;
   assign m_data_out_y[7] = 1'b0;
   assign m_data_out_y[6] = 1'b0;
   assign m_data_out_y[5] = 1'b0;
@@ -23,83 +32,101 @@ module conv_8_4_8_1 ( clk, reset, s_data_in_x, s_valid_x, s_ready_x,
   assign m_data_out_y[1] = 1'b0;
   assign m_data_out_y[0] = 1'b0;
 
-  DFF_X1 \cc/m_addr_read_f_reg[0]  ( .D(n280), .CK(clk), .Q(w_read_addr_f[0])
+  DFF_X1 \cc/m_addr_read_f_reg[0]  ( .D(n877), .CK(clk), .Q(w_read_addr_f[0])
          );
-  DFF_X1 \cc/m_addr_read_f_reg[1]  ( .D(n279), .CK(clk), .Q(w_read_addr_f[1])
+  DFF_X1 \cc/m_addr_read_f_reg[1]  ( .D(n876), .CK(clk), .Q(w_read_addr_f[1])
          );
-  DFF_X1 \cc/en_val_y_reg  ( .D(n288), .CK(clk), .Q(\cc/en_val_y ) );
-  DFF_X1 \cc/conv_done_reg  ( .D(n285), .CK(clk), .Q(w_conv_done) );
-  DFF_X1 \cx/m_addr_x_reg[2]  ( .D(n284), .CK(clk), .Q(w_write_addr_x[2]) );
-  DFF_X1 \cc/number_x_reg[1]  ( .D(n277), .CK(clk), .Q(\cc/number_x [1]) );
-  DFF_X1 \cc/hold_state_reg  ( .D(n208), .CK(clk), .Q(\cc/hold_state ) );
-  DFF_X1 \cc/m_valid_y_reg  ( .D(n286), .CK(clk), .Q(m_valid_y), .QN(n323) );
-  DFF_X1 \cx/m_addr_x_reg[0]  ( .D(n282), .CK(clk), .Q(w_write_addr_x[0]), 
-        .QN(n325) );
-  DFF_X1 \cc/number_x_reg[0]  ( .D(n278), .CK(clk), .Q(\cc/number_x [0]), .QN(
-        n322) );
-  DFF_X1 \cx/m_addr_x_reg[1]  ( .D(n281), .CK(clk), .Q(w_write_addr_x[1]), 
-        .QN(n324) );
-  DFF_X1 \cx/overflow_reg  ( .D(n328), .CK(clk), .Q(n326), .QN(\cx/overflow )
+  DFF_X1 \cc/en_val_y_reg  ( .D(n886), .CK(clk), .Q(\cc/en_val_y ) );
+  DFF_X1 \cc/m_valid_y_reg  ( .D(n884), .CK(clk), .Q(m_valid_y), .QN(n935) );
+  DFF_X1 \cc/number_x_reg[3]  ( .D(n872), .CK(clk), .Q(\cc/number_x [3]), .QN(
+        n936) );
+  DFF_X1 \cc/conv_done_reg  ( .D(n883), .CK(clk), .QN(n929) );
+  DFF_X1 \cx/m_addr_x_reg[2]  ( .D(n878), .CK(clk), .Q(w_write_addr_x[2]), 
+        .QN(n928) );
+  DFF_X1 \cx/m_addr_x_reg[3]  ( .D(n882), .CK(clk), .Q(w_write_addr_x[3]) );
+  DFF_X1 \cx/overflow_reg  ( .D(n881), .CK(clk), .Q(\cx/overflow ), .QN(n933)
          );
-  DFF_X1 \cc/number_x_reg[2]  ( .D(n276), .CK(clk), .Q(\cc/number_x [2]), .QN(
-        n327) );
-  NOR2_X1 U320 ( .A1(reset), .A2(\cx/overflow ), .ZN(s_ready_x) );
-  NOR4_X1 U321 ( .A1(\cc/hold_state ), .A2(m_valid_y), .A3(\cc/en_val_y ), 
-        .A4(n326), .ZN(n311) );
-  NOR2_X1 U322 ( .A1(w_read_addr_f[0]), .A2(n311), .ZN(n291) );
-  NAND3_X1 U323 ( .A1(w_read_addr_f[0]), .A2(w_read_addr_f[1]), .A3(
-        \cc/number_x [2]), .ZN(n289) );
-  NOR4_X1 U324 ( .A1(\cc/hold_state ), .A2(\cc/number_x [1]), .A3(n322), .A4(
-        n289), .ZN(n302) );
-  NOR2_X1 U325 ( .A1(reset), .A2(n302), .ZN(n316) );
-  NOR3_X1 U326 ( .A1(\cc/hold_state ), .A2(m_valid_y), .A3(\cc/en_val_y ), 
-        .ZN(n290) );
-  NAND3_X1 U327 ( .A1(n290), .A2(w_read_addr_f[0]), .A3(w_read_addr_f[1]), 
-        .ZN(n317) );
-  NAND2_X1 U328 ( .A1(n316), .A2(n317), .ZN(n318) );
-  AOI211_X1 U329 ( .C1(w_read_addr_f[0]), .C2(n311), .A(n291), .B(n318), .ZN(
-        n280) );
-  NOR2_X1 U337 ( .A1(m_ready_y), .A2(n323), .ZN(n293) );
-  INV_X1 U338 ( .A(reset), .ZN(n292) );
-  MUX2_X1 U339 ( .A(\cc/hold_state ), .B(n293), .S(n292), .Z(n208) );
-  NAND2_X1 U341 ( .A1(s_valid_x), .A2(s_ready_x), .ZN(n295) );
-  INV_X1 U342 ( .A(n295), .ZN(n294) );
-  NAND2_X1 U343 ( .A1(n294), .A2(w_write_addr_x[0]), .ZN(n309) );
-  NOR2_X1 U344 ( .A1(n324), .A2(n309), .ZN(n304) );
-  INV_X1 U345 ( .A(n304), .ZN(n298) );
-  NAND2_X1 U346 ( .A1(n294), .A2(n325), .ZN(n306) );
-  AOI21_X1 U347 ( .B1(w_conv_done), .B2(n323), .A(reset), .ZN(n305) );
-  NAND2_X1 U348 ( .A1(n305), .A2(n295), .ZN(n307) );
-  NAND2_X1 U349 ( .A1(n306), .A2(n307), .ZN(n308) );
-  NOR2_X1 U350 ( .A1(w_write_addr_x[1]), .A2(n295), .ZN(n296) );
-  OAI21_X1 U351 ( .B1(n308), .B2(n296), .A(w_write_addr_x[2]), .ZN(n297) );
-  OAI21_X1 U352 ( .B1(w_write_addr_x[2]), .B2(n298), .A(n297), .ZN(n284) );
-  NOR2_X1 U353 ( .A1(reset), .A2(n317), .ZN(n288) );
-  NOR2_X1 U354 ( .A1(m_valid_y), .A2(\cc/en_val_y ), .ZN(n300) );
-  AOI21_X1 U355 ( .B1(m_valid_y), .B2(m_ready_y), .A(reset), .ZN(n301) );
-  INV_X1 U356 ( .A(n301), .ZN(n299) );
-  NOR2_X1 U357 ( .A1(n300), .A2(n299), .ZN(n286) );
-  OAI21_X1 U358 ( .B1(n302), .B2(w_conv_done), .A(n301), .ZN(n303) );
-  INV_X1 U359 ( .A(n303), .ZN(n285) );
-  AOI22_X1 U360 ( .A1(\cx/overflow ), .A2(n305), .B1(w_write_addr_x[2]), .B2(
-        n304), .ZN(n328) );
-  OAI21_X1 U361 ( .B1(n325), .B2(n307), .A(n306), .ZN(n282) );
-  INV_X1 U362 ( .A(n308), .ZN(n310) );
-  AOI22_X1 U363 ( .A1(w_write_addr_x[1]), .A2(n310), .B1(n309), .B2(n324), 
-        .ZN(n281) );
-  AOI21_X1 U364 ( .B1(w_read_addr_f[0]), .B2(n311), .A(w_read_addr_f[1]), .ZN(
-        n312) );
-  NOR2_X1 U365 ( .A1(n318), .A2(n312), .ZN(n279) );
-  INV_X1 U366 ( .A(n317), .ZN(n313) );
-  OAI221_X1 U367 ( .B1(n313), .B2(n322), .C1(n317), .C2(\cc/number_x [0]), .A(
-        n316), .ZN(n278) );
-  NOR2_X1 U368 ( .A1(n322), .A2(n317), .ZN(n315) );
-  OAI21_X1 U369 ( .B1(\cc/number_x [1]), .B2(n315), .A(n316), .ZN(n314) );
-  AOI21_X1 U370 ( .B1(\cc/number_x [1]), .B2(n315), .A(n314), .ZN(n277) );
-  NAND3_X1 U371 ( .A1(\cc/number_x [1]), .A2(\cc/number_x [0]), .A3(n316), 
-        .ZN(n320) );
-  OAI21_X1 U372 ( .B1(n317), .B2(n320), .A(n316), .ZN(n321) );
-  NAND2_X1 U373 ( .A1(n318), .A2(n327), .ZN(n319) );
-  OAI22_X1 U374 ( .A1(n321), .A2(n327), .B1(n320), .B2(n319), .ZN(n276) );
+  DFF_X1 \cx/m_addr_x_reg[0]  ( .D(n880), .CK(clk), .Q(w_write_addr_x[0]), 
+        .QN(n932) );
+  DFF_X1 \cx/m_addr_x_reg[1]  ( .D(n879), .CK(clk), .Q(w_write_addr_x[1]), 
+        .QN(n930) );
+  DFF_X1 \cc/number_x_reg[0]  ( .D(n875), .CK(clk), .Q(\cc/number_x [0]), .QN(
+        n931) );
+  DFF_X1 \cc/number_x_reg[1]  ( .D(n874), .CK(clk), .Q(\cc/number_x [1]), .QN(
+        n934) );
+  DFF_X1 \cc/number_x_reg[2]  ( .D(n873), .CK(clk), .Q(\cc/number_x [2]) );
+  DFF_X1 \cc/hold_state_reg  ( .D(n611), .CK(clk), .Q(\cc/hold_state ) );
+  INV_X1 U961 ( .A(reset), .ZN(n926) );
+  NAND2_X1 U962 ( .A1(w_read_addr_f[1]), .A2(w_read_addr_f[0]), .ZN(n888) );
+  NAND3_X1 U963 ( .A1(\cc/number_x [3]), .A2(\cc/number_x [0]), .A3(
+        \cc/number_x [2]), .ZN(n887) );
+  OR4_X1 U964 ( .A1(\cc/hold_state ), .A2(n888), .A3(n934), .A4(n887), .ZN(
+        n903) );
+  NAND2_X1 U965 ( .A1(n926), .A2(n903), .ZN(n919) );
+  INV_X1 U966 ( .A(n919), .ZN(n916) );
+  INV_X1 U967 ( .A(n888), .ZN(n890) );
+  NOR3_X1 U968 ( .A1(\cc/hold_state ), .A2(m_valid_y), .A3(\cc/en_val_y ), 
+        .ZN(n889) );
+  NAND2_X1 U969 ( .A1(n890), .A2(n889), .ZN(n918) );
+  NAND2_X1 U970 ( .A1(n916), .A2(n918), .ZN(n894) );
+  NOR4_X1 U971 ( .A1(\cc/hold_state ), .A2(m_valid_y), .A3(\cc/en_val_y ), 
+        .A4(n933), .ZN(n893) );
+  AOI21_X1 U972 ( .B1(w_read_addr_f[0]), .B2(n893), .A(w_read_addr_f[1]), .ZN(
+        n891) );
+  NOR2_X1 U973 ( .A1(n894), .A2(n891), .ZN(n876) );
+  NOR2_X1 U974 ( .A1(w_read_addr_f[0]), .A2(n893), .ZN(n892) );
+  AOI211_X1 U975 ( .C1(n893), .C2(w_read_addr_f[0]), .A(n892), .B(n894), .ZN(
+        n877) );
+  NOR2_X1 U976 ( .A1(reset), .A2(\cx/overflow ), .ZN(s_ready_x) );
+  INV_X1 U992 ( .A(n894), .ZN(n924) );
+  NAND3_X1 U993 ( .A1(\cc/number_x [1]), .A2(\cc/number_x [0]), .A3(n916), 
+        .ZN(n895) );
+  NOR2_X1 U994 ( .A1(n924), .A2(n895), .ZN(n897) );
+  NAND4_X1 U995 ( .A1(\cc/number_x [1]), .A2(\cc/number_x [0]), .A3(
+        \cc/number_x [2]), .A4(n916), .ZN(n923) );
+  OAI21_X1 U996 ( .B1(n918), .B2(n923), .A(n916), .ZN(n922) );
+  INV_X1 U997 ( .A(n922), .ZN(n896) );
+  MUX2_X1 U998 ( .A(n897), .B(n896), .S(\cc/number_x [2]), .Z(n873) );
+  NAND2_X1 U999 ( .A1(s_valid_x), .A2(s_ready_x), .ZN(n898) );
+  INV_X1 U1000 ( .A(n898), .ZN(n904) );
+  NAND2_X1 U1001 ( .A1(n932), .A2(n904), .ZN(n912) );
+  OAI211_X1 U1002 ( .C1(n929), .C2(m_valid_y), .A(n898), .B(n926), .ZN(n913)
+         );
+  AND2_X1 U1003 ( .A1(n912), .A2(n913), .ZN(n915) );
+  OAI21_X1 U1004 ( .B1(w_write_addr_x[1]), .B2(n898), .A(n915), .ZN(n905) );
+  NAND2_X1 U1005 ( .A1(n904), .A2(w_write_addr_x[0]), .ZN(n914) );
+  NOR2_X1 U1006 ( .A1(n914), .A2(n930), .ZN(n899) );
+  MUX2_X1 U1007 ( .A(n905), .B(n899), .S(n928), .Z(n878) );
+  NOR2_X1 U1009 ( .A1(reset), .A2(n918), .ZN(n886) );
+  NOR2_X1 U1010 ( .A1(m_valid_y), .A2(\cc/en_val_y ), .ZN(n901) );
+  AOI21_X1 U1011 ( .B1(m_valid_y), .B2(m_ready_y), .A(reset), .ZN(n900) );
+  INV_X1 U1012 ( .A(n900), .ZN(n902) );
+  NOR2_X1 U1013 ( .A1(n901), .A2(n902), .ZN(n884) );
+  AOI21_X1 U1014 ( .B1(n903), .B2(n929), .A(n902), .ZN(n883) );
+  OR2_X1 U1015 ( .A1(n914), .A2(w_write_addr_x[3]), .ZN(n907) );
+  NAND2_X1 U1016 ( .A1(w_write_addr_x[1]), .A2(w_write_addr_x[2]), .ZN(n909)
+         );
+  AND2_X1 U1017 ( .A1(n904), .A2(w_write_addr_x[3]), .ZN(n908) );
+  AOI22_X1 U1018 ( .A1(w_write_addr_x[3]), .A2(n905), .B1(n908), .B2(n928), 
+        .ZN(n906) );
+  OAI21_X1 U1019 ( .B1(n907), .B2(n909), .A(n906), .ZN(n882) );
+  OAI21_X1 U1020 ( .B1(m_valid_y), .B2(n929), .A(n926), .ZN(n911) );
+  NAND2_X1 U1021 ( .A1(n908), .A2(w_write_addr_x[0]), .ZN(n910) );
+  OAI22_X1 U1022 ( .A1(n933), .A2(n911), .B1(n910), .B2(n909), .ZN(n881) );
+  OAI21_X1 U1023 ( .B1(n932), .B2(n913), .A(n912), .ZN(n880) );
+  AOI22_X1 U1024 ( .A1(w_write_addr_x[1]), .A2(n915), .B1(n914), .B2(n930), 
+        .ZN(n879) );
+  INV_X1 U1025 ( .A(n918), .ZN(n917) );
+  OAI221_X1 U1026 ( .B1(n917), .B2(n931), .C1(n918), .C2(\cc/number_x [0]), 
+        .A(n916), .ZN(n875) );
+  NOR2_X1 U1027 ( .A1(n918), .A2(n931), .ZN(n921) );
+  INV_X1 U1028 ( .A(n921), .ZN(n920) );
+  AOI221_X1 U1029 ( .B1(\cc/number_x [1]), .B2(n921), .C1(n934), .C2(n920), 
+        .A(n919), .ZN(n874) );
+  OAI22_X1 U1030 ( .A1(n924), .A2(n923), .B1(n922), .B2(n936), .ZN(n872) );
+  NOR2_X1 U1031 ( .A1(n935), .A2(m_ready_y), .ZN(n925) );
+  OAI22_X1 U1032 ( .A1(n926), .A2(\cc/hold_state ), .B1(n925), .B2(reset), 
+        .ZN(n927) );
+  INV_X1 U1033 ( .A(n927), .ZN(n611) );
 endmodule
 

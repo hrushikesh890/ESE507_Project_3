@@ -1,4 +1,18 @@
-$$ROM$$
+module conv_16_4_16_1_f_rom(clk, addr, z);
+   input clk;
+   input [1:0] addr;
+   output logic signed [15:0] z;
+   always_ff @(posedge clk) begin
+      case(addr)
+        0: z <= 16'd181;
+        1: z <= -16'd214;
+        2: z <= -16'd57;
+        3: z <= 16'd172;
+      endcase
+   end
+endmodule
+
+
 module memory(clk, data_in, data_out, addr, wr_en);
   parameter WIDTH=16, SIZE=64, LOGSIZE=6;
   input [WIDTH-1:0] data_in;
@@ -203,8 +217,8 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   end
 endmodule
 
-module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
-  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$;
+module conv_16_4_16_1(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
+  parameter WIDTH = 16, ADDRX = 4, ADDRF = 2, LENX = 16, LENF = 4;
   input clk, reset, s_valid_x, m_ready_y;
   input signed [WIDTH-1:0] s_data_in_x;
   output s_ready_x, m_valid_y;
@@ -227,7 +241,7 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   end
   memory #(WIDTH, LENX, ADDRX) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
 
-  $rommodname$ mf(.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
+  conv_16_4_16_1_f_rom mf(.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y));
 

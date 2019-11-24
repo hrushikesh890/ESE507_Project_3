@@ -4,8 +4,8 @@
 set CLK_NAME "clk";
 set CLK_PERIOD 1;
 set RST_NAME "reset";
-set TOP_MOD_NAME "conv_8_4_8_1";
-set SRC_FILE "part1_simple_tb.sv";
+set TOP_MOD_NAME "conv_16_4_16_1";
+set SRC_FILE "conv_16_4_16_1.sv";
 # If you have multiple source files, change the line above to list them all like this:
 # set SRC_FILE [list "file1.sv" "file2.sv"];
 ###############################################

@@ -1,5 +1,5 @@
-# vsim tb_conv_8_4_8_1 -c -do "run -all" 
-# Start time: 15:21:59 on Nov 22,2019
+# vsim tb_conv_43_16_32_1 -c -do "run -all" 
+# Start time: 17:38:06 on Nov 24,2019
 # //  ModelSim DE 2019.3 Jul 24 2019 Linux 3.10.0-957.el7.x86_64
 # //
 # //  Copyright 1991-2019 Mentor Graphics Corporation
@@ -14,17 +14,16 @@
 # //  18 U.S.C. Section 1905.
 # //
 # Loading sv_std.std
-# Loading work.tb_conv_8_4_8_1
-# Loading work.conv_8_4_8_1
+# Loading work.tb_conv_43_16_32_1
+# Loading work.conv_43_16_32_1
 # Loading work.memory
-# Loading work.conv_8_4_8_1_f_rom
+# Loading work.conv_43_16_32_1_f_rom
 # Loading work.memory_control_xf
 # Loading work.conv_control
-# Loading work.get_max
 # Loading work.convolutioner
 # run -all
-# Simulated        6250 outputs. Found           0 errors.
-# ** Note: $finish    : part1_simple_tb.sv(347)
-#    Time: 610425 ns  Iteration: 2  Instance: /tb_conv_8_4_8_1
-# End time: 15:22:00 on Nov 22,2019, Elapsed time: 0:00:01
+# Simulated        6496 outputs. Found           0 errors.
+# ** Note: $finish    : tb_conv_43_16_32_1.sv(351)
+#    Time: 1428235 ns  Iteration: 2  Instance: /tb_conv_43_16_32_1
+# End time: 17:38:07 on Nov 24,2019, Elapsed time: 0:00:01
 # Errors: 0, Warnings: 0
