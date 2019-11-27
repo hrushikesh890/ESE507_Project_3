@@ -204,7 +204,7 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
 endmodule
 
 module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
-  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$;
+  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$, P=$P$;
   input clk, reset, s_valid_x, m_ready_y;
   input signed [WIDTH-1:0] s_data_in_x;
   output s_ready_x, m_valid_y;
@@ -220,14 +220,15 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
       w_to_addrx = w_write_addr_x;
     else
       w_to_addrx = w_read_addr_x;
-    if (w_wr_en_x == 1)
-      w_to_addrf = 0;
-    else
-      w_to_addrf = w_read_addr_f;
+    w_to_addrf = w_read_addr_f;
   end
-  memory #(WIDTH, LENX, ADDRX) mx (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
 
-  $rommodname$ mf(.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
+  genvar i;
+  generate
+  	for (i = 0; i < P; i++) : mx
+  		memory #(WIDTH, LENX, ADDRX) (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
+  endgenerate
+  $rommodname$ mf (.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y));
 
