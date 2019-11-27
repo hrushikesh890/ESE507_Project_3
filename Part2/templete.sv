@@ -14,11 +14,12 @@ module memory(clk, data_in, data_out, addr, wr_en);
 endmodule
 
 module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write, conv_done, read_done, valid_y);
-  parameter LOGSIZE = 6, SIZE = 8;
+  parameter LOGSIZE = 6, SIZE = 8, P = 4;
   input clk, reset, s_valid_x, conv_done, valid_y;
   output logic s_ready_x, read_done, ready_write;
-  output logic [LOGSIZE - 1:0] m_addr_x;
+  output logic [LOGSIZE - 1:0] m_addr_x [P-1 : 0];
   logic overflow;
+  logic [P-1:0] j;
 
   always_comb begin
     if (reset) begin 
@@ -40,15 +41,17 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   end
 
   always_ff @(posedge clk) begin
-    if (reset) begin;
-      m_addr_x <= 0;
-      
+    if (reset) begin
+    	for(j = 0; j < P; j++)
+      		m_addr_x[j] <= 0;
     end
     else  if (ready_write == 1) begin
-        m_addr_x <= m_addr_x + 1;
+    	for(j = 0; j < P; j++)
+        	m_addr_x[j] <= m_addr_x[j] + 1;
       end
     else if (conv_done == 1 && valid_y == 0) begin
-          m_addr_x <= 0;
+    	for(j = 0; j < P; j++)
+         	m_addr_x[j] <= 0;
       end
     end
 
@@ -209,7 +212,8 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   input signed [WIDTH-1:0] s_data_in_x;
   output s_ready_x, m_valid_y;
   output signed [WIDTH-1:0] m_data_out_y;
-  logic [WIDTH-1:0] w_to_multx, w_to_multf;
+  logic [WIDTH-1:0] w_to_multx [P-1 : 0];
+  logic [WIDTH-1:0] w_to_multf;
   logic w_wr_en_x, w_conv_done, w_read_done_x;
   logic [ADDRX-1:0] w_to_addrx, w_read_addr_x, w_write_addr_x;
   logic [ADDRF-1:0] w_to_addrf, w_read_addr_f;
@@ -226,13 +230,19 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   genvar i;
   generate
   	for (i = 0; i < P; i++) : mx
-  		memory #(WIDTH, LENX, ADDRX) (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx), .addr(w_to_addrx), .wr_en(w_wr_en_x));
+  		memory #(WIDTH, LENX, ADDRX) (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx[i]), .addr(w_to_addrx[i]), .wr_en(w_wr_en_x));
   endgenerate
+
   $rommodname$ mf (.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .conv_done(w_conv_done), .read_done(w_read_done_x), .valid_y(m_valid_y));
 
   conv_control #(ADDRX, ADDRF, LENX, LENF) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .en_acc(e_acc), .clr_acc(c_acc));
 
-  convolutioner #(WIDTH, ADDRX, ADDRF) conv(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx), .m_addr_read_f(w_to_addrf), .m_data_out_y(m_data_out_y), .en_acc(e_acc), .clr_acc(c_acc), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
+
+  genvar j;
+  generate
+  	for(j = 0; j < P; j++) : cc
+  		convolutioner #(WIDTH, ADDRX, ADDRF) conv(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(m_data_out_y), .en_acc(e_acc), .clr_acc(c_acc), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
+  endgenerate
 endmodule
