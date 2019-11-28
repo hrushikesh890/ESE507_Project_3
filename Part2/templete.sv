@@ -305,7 +305,7 @@ module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, s
 endmodule
 
 module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
-  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$, P=$P$, SIZE = LENX - LENF + 1, L;
+  parameter WIDTH = $WIDTH$, ADDRX = $ADDRX$, ADDRF = $ADDRF$, LENX = $N$, LENF = $M$, P=$P$, SIZE = LENX - LENF + 1, LOGSIZE = ADDRX;
   input clk, reset, s_valid_x, m_ready_y;
   input signed [WIDTH-1:0] s_data_in_x;
   output s_ready_x, m_valid_y;
