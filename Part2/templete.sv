@@ -13,7 +13,7 @@ module memory(clk, data_in, data_out, addr, wr_en);
   end
 endmodule
 
-module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write, read_done, hold_state);
+module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write, read_done, hold_state, conv_done, valid_y);
   parameter LOGSIZE = 6, SIZE = 8, P = 4;
   input clk, reset, s_valid_x, conv_done, valid_y, hold_state;
   output logic s_ready_x, read_done, ready_write;
@@ -84,7 +84,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
   input reset, clk, read_done_x, hold_state, valid_op;
   output logic [ADDR_X-1:0] m_addr_read_x [P-1:0];
   output logic [ADDR_F-1:0] m_addr_read_f;
-  output logic [ADDRX-1:0] start_addr;
+  output logic [ADDR_X-1:0] start_addr;
   output logic conv_done;
   output logic [P-1:0] en_acc;
   output logic [P-1:0] clr_acc;
@@ -337,9 +337,9 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
 
   $rommodname$ mf (.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
-  memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x),.read_done(w_read_done_x), hold_state(w_hold_state));
+  memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .read_done(w_read_done_x), .hold_state(w_hold_state), .valid_y(m_valid_y), .conv_done(w_conv_done));
 
-  conv_control #(ADDRX, ADDRF, LENX, LENF) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .m_valid_y(m_valid_y), .hold_state(w_hold_state),  .m_ready_y(m_ready_y), .en_acc(e_acc), .clr_acc(c_acc), .start_addr(w_start_addr), valid_op(w_valid_op));
+  conv_control #(ADDRX, ADDRF, LENX, LENF) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .hold_state(w_hold_state), .en_acc(e_acc), .clr_acc(c_acc), .start_addr(w_start_addr), .valid_op(w_valid_op));
 
 
   genvar j;
