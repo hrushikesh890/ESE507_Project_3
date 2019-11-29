@@ -14,10 +14,10 @@ module memory(clk, data_in, data_out, addr, wr_en);
 endmodule
 
 module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write, read_done, hold_state, conv_done, valid_y);
-  parameter LOGSIZE = 6, SIZE = 8, P = 4;
+  parameter LOGSIZE = 6, SIZE = 8;
   input clk, reset, s_valid_x, conv_done, valid_y, hold_state;
   output logic s_ready_x, read_done, ready_write;
-  output logic [LOGSIZE - 1:0] m_addr_x [P-1:0];
+  output logic [LOGSIZE - 1:0] m_addr_x;
   logic overflow;
   logic disable_read_done;
   int j;
@@ -43,16 +43,13 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
 
   always_ff @(posedge clk) begin
     if (reset) begin
-    	for(j = 0; j < P; j++)
-      		m_addr_x[j] <= 0;
+      m_addr_x <= 0;
     end
     else  if (ready_write == 1) begin
-    	for(j = 0; j < P; j++)
-        	m_addr_x[j] <= m_addr_x[j] + 1;
+        m_addr_x <= m_addr_x + 1;
       end
     else if (conv_done == 1 && valid_y == 0) begin
-    	for(j = 0; j < P; j++)
-         	m_addr_x[j] <= 0;
+         	m_addr_x <= 0;
       end
     end
 
@@ -81,11 +78,11 @@ endmodule
 
 module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_done_x, en_acc, clr_acc, hold_state, start_addr, valid_op);
   parameter ADDR_X = 3, ADDR_F = 2, LENX = 8, LENF = 4, P = 2; 
-  input reset, clk, read_done_x, hold_state, valid_op;
+  input reset, clk, read_done_x, hold_state;
   output logic [ADDR_X-1:0] m_addr_read_x [P-1:0];
   output logic [ADDR_F-1:0] m_addr_read_f;
   output logic [ADDR_X-1:0] start_addr;
-  output logic conv_done;
+  output logic conv_done, valid_op;
   output logic [P-1:0] en_acc;
   output logic [P-1:0] clr_acc;
   logic [ADDR_X-1:0] number_x;
@@ -245,50 +242,45 @@ module op_memory(clk, data_in, data_out, waddr, raddr, wr_en);
   end
 endmodule
 
-module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en);
+module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en, write_addr);
   parameter SIZE=5, P=2, LOGSIZE=2;
-  input clk, reset, conv_done, m_ready_y, valid_op;
-  input [LOGSIZE-1] start_addr;
-  output hold_state, m_valid_y, wr_en;
-  logic [ADDRX-1] read_addr; 
-  logic [ADDRX-1] write_addr;
-
+  input logic clk, reset, conv_done, m_ready_y, valid_op;
+  input logic [LOGSIZE-1:0] start_addr;
+  output logic hold_state, m_valid_y, wr_en;
+  logic [LOGSIZE-1:0] read_addr; 
+  output logic [LOGSIZE-1:0] write_addr;
   always_ff  @(posedge clk) begin
     if (reset) begin
       hold_state <= 0;
-      //m_valid_y <= 0;
       read_addr <= 0;
       write_addr <= 0;
       wr_en <= 0;
     end
-    else
-    if (valid_op && hold_state == 0) begin
-      wr_en <= 1;
-      if (start_addr < (SIZE-1) - P)
-        write_addr <= start_addr + P;
-      else begin
-        write_addr <= SIZE;
-        if (read_addr != SIZE-1 && conv_done)
-          hold_state <= 1;
-      end
-    end
-    else
-      wr_en <= 0;
-
-    if (m_ready_y == 1) begin
-      if (read_addr < write_addr) begin
-        //m_valid_y <= 1;
-        read_addr <= read_addr + 1;
+    else begin
+      if (valid_op && hold_state == 0) begin
+        wr_en <= 1;
+        if (start_addr < (SIZE-1) - P)
+          write_addr <= start_addr + P;
+        else begin
+          write_addr <= SIZE;
+          if (read_addr != SIZE-1 && conv_done)
+            hold_state <= 1;
+        end
       end
       else
-        //m_valid_y <= 0;
-    end
+        wr_en <= 0;
 
-    if (read_addr == SIZE) begin
-      read_addr <= 0;
-      write_addr <= 0;
-      hold_state <= 0;
-      //m_valid_y <= 0;
+      if (m_ready_y == 1) begin
+        if (read_addr < write_addr) begin
+          read_addr <= read_addr + 1;
+        end
+      end
+
+      if (read_addr == SIZE) begin
+        read_addr <= 0;
+        write_addr <= 0;
+        hold_state <= 0;
+      end
     end
   end
 
@@ -313,44 +305,46 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   logic [WIDTH-1:0] w_to_multx [P-1 : 0];
   logic [WIDTH-1:0] w_to_multf;
   logic w_wr_en_x, w_conv_done, w_read_done_x, w_hold_state, w_wr_en, w_valid_op;
-  logic [ADDRX-1:0] w_to_addrx, w_read_addr_x, w_write_addr_x;
+  logic [ADDRX-1:0] w_to_addrx;  
+  logic [ADDRX-1:0] w_read_addr_x [P-1:0]; 
+  logic [ADDRX-1:0] w_write_addr_x;
   logic [ADDRF-1:0] w_to_addrf, w_read_addr_f;
-  logic [ADDRX-1] w_start_addr;
+  logic [ADDRX-1:0] w_start_addr;
   logic e_acc,c_acc;
   logic [P-1:0] w_en_acc, w_clr_acc;
   logic signed [WIDTH-1:0] conv_op [P-1:0];
-
-
-  always_comb begin
-    if (w_wr_en_x == 1)
-      w_to_addrx = w_write_addr_x;
-    else
-      w_to_addrx = w_read_addr_x;
-    w_to_addrf = w_read_addr_f;
-  end
+  logic [ADDRX-1:0] w_read_addr_op;  
 
   genvar i;
   generate
-  	for (i = 0; i < P; i++) : mx
-  		memory #(WIDTH, LENX, ADDRX) (.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx[i]), .addr(w_to_addrx[i]), .wr_en(w_wr_en_x));
+    for (i = 0; i < P; i++) begin
+      always_comb begin
+       if (w_wr_en_x == 1)
+         w_to_addrx = w_write_addr_x;
+        else
+          w_to_addrx = w_read_addr_x[i];
+        w_to_addrf = w_read_addr_f;
+      end 
+      memory #(WIDTH, LENX, ADDRX) mx(.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx[i]), .addr(w_to_addrx), .wr_en(w_wr_en_x));
+    end
   endgenerate
 
   $rommodname$ mf (.clk(clk), .addr(w_to_addrf), .z(w_to_multf));
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .read_done(w_read_done_x), .hold_state(w_hold_state), .valid_y(m_valid_y), .conv_done(w_conv_done));
 
-  conv_control #(ADDRX, ADDRF, LENX, LENF) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .hold_state(w_hold_state), .en_acc(e_acc), .clr_acc(c_acc), .start_addr(w_start_addr), .valid_op(w_valid_op));
+  conv_control #(ADDRX, ADDRF, LENX, LENF, P) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .hold_state(w_hold_state), .en_acc(e_acc), .clr_acc(c_acc), .start_addr(w_start_addr), .valid_op(w_valid_op));
 
 
   genvar j;
   generate
-  	for(j = 0; j < P; j++) : mac_unit
-  		convolutioner #(WIDTH, ADDRX, ADDRF) (.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(conv_op[j]), .en_acc(w_en_acc[j]), .clr_acc(w_clr_acc[j]), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
+  	for(j = 0; j < P; j++)
+  		convolutioner #(WIDTH, ADDRX, ADDRF) mac_unit(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(conv_op[j]), .en_acc(w_en_acc[j]), .clr_acc(w_clr_acc[j]), .m_data_x(w_to_multx), .m_data_f(w_to_multf));
   endgenerate
 
-  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_wr_en));
+  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_wr_en), .waddr(w_start_addr), .raddr(w_read_addr_op));
 
-  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en));
+  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op));
 
 endmodule
 
