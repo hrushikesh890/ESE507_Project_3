@@ -319,6 +319,7 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   always_comb begin
   	if (w_wr_en_x == 1)
         w_to_addrx[0] = w_write_addr_x;
+        w_to_addrx[P-1:1] = 0;
     else begin
     	int i;
     	for (i = 0; i < P; i++)
