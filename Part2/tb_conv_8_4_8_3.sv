@@ -81,10 +81,11 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
       overflow <= 1;
       read_done <= 1;
     end
-    else if(hold_state)
+    else if (hold_state)
       disable_read_done <= 1;
     else if(hold_state == 0 && disable_read_done == 1) begin
       read_done <= 0;
+      overflow <= 0;
       disable_read_done <= 0;
     end        
   end
@@ -264,13 +265,14 @@ module op_memory(clk, data_in, data_out, waddr, raddr, wr_en);
   end
 endmodule
 
-module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en, read_addr);
+module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en, read_addr, send_addr);
   parameter SIZE=5, P=2, LOGSIZE=2;
   input logic clk, reset, conv_done, m_ready_y, valid_op;
   input logic [LOGSIZE-1:0] start_addr;
   output logic hold_state, m_valid_y, wr_en;
   output logic [LOGSIZE-1:0] read_addr; 
   logic [LOGSIZE-1:0] write_addr;
+  output logic [LOGSIZE-1:0] send_addr;
   always_ff  @(posedge clk) begin
     if (reset) begin
       hold_state <= 0;
@@ -304,6 +306,7 @@ module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, s
         hold_state <= 0;
       end
     end
+    send_addr <= start_addr;
   end
 
   always_comb begin
@@ -336,6 +339,7 @@ module conv_8_4_8_3(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   logic [P-1:0] w_en_acc, w_clr_acc;
   logic signed [WIDTH-1:0] conv_op [P-1:0];
   logic [ADDRX-1:0] w_read_addr_op;  
+  logic [ADDRX-1:0] w_write_addr_op;
 
   
   always_comb begin
@@ -370,9 +374,9 @@ module conv_8_4_8_3(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   		convolutioner #(WIDTH, ADDRX, ADDRF) mac_unit(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(conv_op[j]), .en_acc(w_en_acc[j]), .clr_acc(w_clr_acc[j]), .m_data_x(w_to_multx[j]), .m_data_f(w_to_multf));
   endgenerate
 
-  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_wr_en), .waddr(w_start_addr), .raddr(w_read_addr_op));
+  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_wr_en), .waddr(w_write_addr_op), .raddr(w_read_addr_op));
 
-  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op));
+  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op), .send_addr(w_write_addr_op));
 
 endmodule
 

@@ -119,10 +119,8 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         for (i = 0; i < P; i++) begin
           if ((number_x + i) < (LENX - LENF + 1))
             m_addr_read_x[i] <= number_x + i;
-          else begin
-            en_acc[i] <= 0;
-            clr_acc[i] <= 1;
-          end
+          en_acc[i] <= 0;
+          clr_acc[i] <= 1;
         end
         number_x <= number_x + P;
         m_addr_read_f <= 0;
@@ -319,7 +317,7 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   always_comb begin
   	if (w_wr_en_x == 1)
         w_to_addrx[0] = w_write_addr_x;
-        w_to_addrx[P-1:1] = 0;
+        //w_to_addrx[P-1:1] = 0;
     else begin
     	int i;
     	for (i = 0; i < P; i++)
