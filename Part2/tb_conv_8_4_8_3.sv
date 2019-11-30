@@ -63,7 +63,7 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
         m_addr_x <= m_addr_x + 1;
       end
     else if (conv_done == 1 && valid_y == 0) begin
-         	m_addr_x <= 0;
+          m_addr_x <= 0;
       end
     end
 
@@ -91,9 +91,9 @@ module memory_control_xf(clk, reset, s_valid_x, s_ready_x, m_addr_x, ready_write
   end
 endmodule
 
-module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_done_x, en_acc, clr_acc, hold_state, start_addr, valid_op);
+module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_done_x, en_acc, clr_acc, hold_state, start_addr, valid_op, write_done);
   parameter ADDR_X = 3, ADDR_F = 2, LENX = 8, LENF = 4, P = 2; 
-  input reset, clk, read_done_x, hold_state;
+  input reset, clk, read_done_x, hold_state, write_done;
   output logic [ADDR_X-1:0] m_addr_read_x [P-1:0];
   output logic [ADDR_F-1:0] m_addr_read_f;
   output logic [ADDR_X-1:0] start_addr;
@@ -119,20 +119,21 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       en_val_op <= 0;
     end
     else begin 
-      if (read_done_x  && hold_state == 0) begin
+    /*  if (read_done_x  && hold_state == 0) begin
         valid_op <= 0;
         if (valid_op == 0) begin
           for (i = 0; i < P; i++) begin
             en_acc[i] <= 1;
             clr_acc[i] <= 0;
           end
-          if (en_acc[0]) begin
+        //end
+          //if (en_acc[0]) begin
             for (i = 0; i < P; i++) begin
               m_addr_read_x[i] <= m_addr_read_x[i] + 1;
             end
             m_addr_read_f <= m_addr_read_f + 1;
-          end
-        end
+          //end
+       end
       end
       if ((m_addr_read_f == (LENF - 1)) && (hold_state == 0)) begin
         en_val_op <= 1;
@@ -140,8 +141,8 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         for (i = 0; i < P; i++) begin
           if ((number_x + i) < (LENX - LENF + 1))
             m_addr_read_x[i] <= number_x + i;
-          en_acc[i] <= 0;
-          clr_acc[i] <= 1;
+          /*en_acc[i] <= 0;
+          clr_acc[i] <= 1;*//*
         end
         number_x <= number_x + P;
         m_addr_read_f <= 0;
@@ -150,8 +151,8 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         conv_done <= 1;
         en_val_op <= 1;
         for (i = 0; i < P; i++) begin
-          en_acc[i] <= 0;
-          clr_acc[i] <= 1;        
+          //en_acc[i] <= 0;
+          //clr_acc[i] <= 1;        
           m_addr_read_x[i] <= i;
         end
         m_addr_read_f <= 0;
@@ -160,8 +161,8 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       if (hold_state) begin
         for (i = 0; i < P; i++) begin
-          en_acc[i] <= 0;
-          clr_acc[i] <= 1;        
+          //en_acc[i] <= 0;
+          //clr_acc[i] <= 1;        
           m_addr_read_x[i] <= i;
         end
         m_addr_read_f <= 0;
@@ -172,7 +173,53 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       if (en_val_op == 1) begin
         valid_op <= 1;
         en_val_op <= 0;
-    	end
+        for (i = 0; i < P; i++) begin
+          en_acc[i] <= 0;
+          clr_acc[i] <= 1;        
+      end
+      end*/
+
+      if (read_done_x  && hold_state == 0 && valid_op == 0 && en_val_op == 0 && write_done != 1) begin
+          for (i = 0; i < P; i++) begin
+            en_acc[i] <= 1;
+            clr_acc[i] <= 0;
+            m_addr_read_x[i] <= m_addr_read_x[i] + 1;
+          end
+          m_addr_read_f <= m_addr_read_f + 1;
+      end
+      if ((m_addr_read_f == (LENF - 1)) && (hold_state == 0) && en_val_op == 0 && valid_op == 0 && write_done != 1) begin
+          for (i = 0; i < P; i++) begin
+            if ((number_x + i) < (LENX - LENF + 1))
+              m_addr_read_x[i] <= number_x + i;
+            en_acc[i] <= 0;
+          end
+          number_x <= number_x + P;
+          start_addr <= number_x - P;
+          m_addr_read_f <= 0;
+          en_val_op <= 1;
+      end
+      if ((number_x > (LENX - LENF + 1)) && (m_addr_read_f == (LENF - 1))) begin
+        if (hold_state != 1)
+            conv_done <= 1;
+        for(i = 0; i < P; i++) begin
+            en_acc[i] <= 0;        
+            m_addr_read_x[i] <= i;
+        end
+        m_addr_read_f <= 0;
+        number_x <= P;
+        start_addr <= number_x - P;
+      end
+      if (en_val_op) begin
+        valid_op <= 1;
+        en_val_op <= 0;
+        for(i = 0; i < P; i++) begin
+            en_acc[i] <= 0;
+        end    
+      end
+      if (write_done) begin
+        for (i = 0; i < P; i++)
+          clr_acc[i] <= 1;
+      end
     end
   end
 endmodule
@@ -209,18 +256,18 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
     else if (en_acc) begin
       w_mult_op = m_data_x * m_data_f;
       if(w_mult_op > max_val)
-      	w_real_mult_op = max_val;
+        w_real_mult_op = max_val;
       else if(w_mult_op < min_val)
-      	w_real_mult_op = min_val;
+        w_real_mult_op = min_val;
       else
-      	w_real_mult_op = w_mult_op;
+        w_real_mult_op = w_mult_op;
       w_addr_op = w_real_mult_op + prev_output;
       if(w_addr_op > max_val)
-      	w_real_addr_op = max_val;
+        w_real_addr_op = max_val;
       else if(w_addr_op < min_val)
-      	w_real_addr_op = min_val;
+        w_real_addr_op = min_val;
       else
-      	w_real_addr_op = w_addr_op;
+        w_real_addr_op = w_addr_op;
     end
    else
     w_real_addr_op = m_data_out_y;
@@ -237,11 +284,11 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
 
   always_ff @(posedge clk) begin
     if (reset || (clr_acc == 1) || w_real_addr_op <= 0)
-    	m_data_out_y <= 0;
+      m_data_out_y <= 0;
     else if (en_acc)
-    	m_data_out_y <= w_real_addr_op;
+      m_data_out_y <= w_real_addr_op;
     else
-    	m_data_out_y <= m_data_out_y;
+      m_data_out_y <= m_data_out_y;
   end
 endmodule
 
@@ -265,7 +312,7 @@ module op_memory(clk, data_in, data_out, waddr, raddr, wr_en);
   end
 endmodule
 
-module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en, read_addr, send_addr);
+module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, start_addr, valid_op, wr_en, read_addr, send_addr, write_done);
   parameter SIZE=5, P=2, LOGSIZE=2;
   input logic clk, reset, conv_done, m_ready_y, valid_op;
   input logic [LOGSIZE-1:0] start_addr;
@@ -273,12 +320,14 @@ module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, s
   output logic [LOGSIZE-1:0] read_addr; 
   logic [LOGSIZE-1:0] write_addr;
   output logic [LOGSIZE-1:0] send_addr;
+  output logic write_done;
   always_ff  @(posedge clk) begin
     if (reset) begin
       hold_state <= 0;
       read_addr <= 0;
       write_addr <= 0;
       wr_en <= 0;
+      write_done <= 0;
     end
     else begin
       if (valid_op && hold_state == 0) begin
@@ -294,6 +343,12 @@ module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, s
       else
         wr_en <= 0;
 
+      if (valid_op)
+          write_done <= 1;
+
+      if (write_done)
+        write_done <= 0;
+
       if (m_ready_y == 1) begin
         if (read_addr < write_addr) begin
           read_addr <= read_addr + 1;
@@ -304,6 +359,7 @@ module output_control(clk, reset, conv_done, hold_state, m_valid_y, m_ready_y, s
         read_addr <= 0;
         write_addr <= 0;
         hold_state <= 0;
+        //m_valid_y <= 0; //change
       end
     end
     send_addr <= start_addr;
@@ -340,24 +396,25 @@ module conv_8_4_8_3(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   logic signed [WIDTH-1:0] conv_op [P-1:0];
   logic [ADDRX-1:0] w_read_addr_op;  
   logic [ADDRX-1:0] w_write_addr_op;
+  logic w_write_done;
 
   
   always_comb begin
-  	int i;
-  	if (w_wr_en_x == 1)
-  		for (i = 0; i < P; i++)
-        	w_to_addrx[i] = w_write_addr_x;
+    int i;
+    if (w_wr_en_x == 1)
+      for (i = 0; i < P; i++)
+          w_to_addrx[i] = w_write_addr_x;
         //w_to_addrx[P-1:1] = 0;
     else begin
-    	for (i = 0; i < P; i++)
-    		w_to_addrx[i] = w_read_addr_x[i];
+      for (i = 0; i < P; i++)
+        w_to_addrx[i] = w_read_addr_x[i];
     end
-	w_to_addrf = w_read_addr_f;
+  w_to_addrf = w_read_addr_f;
   end
     genvar i;
-  	generate
-    	for (i = 0; i < P; i++)  
-    		memory #(WIDTH, LENX, ADDRX) mx(.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx[i]), .addr(w_to_addrx[i]), .wr_en(w_wr_en_x));
+    generate
+      for (i = 0; i < P; i++)  
+        memory #(WIDTH, LENX, ADDRX) mx(.clk(clk), .data_in(s_data_in_x), .data_out(w_to_multx[i]), .addr(w_to_addrx[i]), .wr_en(w_wr_en_x));
     endgenerate
   
 
@@ -365,18 +422,18 @@ module conv_8_4_8_3(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
 
   memory_control_xf #(ADDRX, LENX) cx (.clk(clk), .reset(reset), .s_valid_x(s_valid_x), .s_ready_x(s_ready_x), .m_addr_x(w_write_addr_x), .ready_write(w_wr_en_x), .read_done(w_read_done_x), .hold_state(w_hold_state), .valid_y(m_valid_y), .conv_done(w_conv_done));
 
-  conv_control #(ADDRX, ADDRF, LENX, LENF, P) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .hold_state(w_hold_state), .en_acc(w_en_acc), .clr_acc(w_clr_acc), .start_addr(w_start_addr), .valid_op(w_valid_op));
+  conv_control #(ADDRX, ADDRF, LENX, LENF, P) cc(.reset(reset), .clk(clk), .m_addr_read_x(w_read_addr_x), .m_addr_read_f(w_read_addr_f), .conv_done(w_conv_done), .read_done_x(w_read_done_x), .hold_state(w_hold_state), .en_acc(w_en_acc), .clr_acc(w_clr_acc), .start_addr(w_start_addr), .valid_op(w_valid_op), .write_done(w_write_done));
 
 
   genvar j;
   generate
-  	for(j = 0; j < P; j++)
-  		convolutioner #(WIDTH, ADDRX, ADDRF) mac_unit(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(conv_op[j]), .en_acc(w_en_acc[j]), .clr_acc(w_clr_acc[j]), .m_data_x(w_to_multx[j]), .m_data_f(w_to_multf));
+    for(j = 0; j < P; j++)
+      convolutioner #(WIDTH, ADDRX, ADDRF) mac_unit(.clk(clk), .reset(reset), .m_addr_read_x(w_to_addrx[j]), .m_addr_read_f(w_to_addrf), .m_data_out_y(conv_op[j]), .en_acc(w_en_acc[j]), .clr_acc(w_clr_acc[j]), .m_data_x(w_to_multx[j]), .m_data_f(w_to_multf));
   endgenerate
 
-  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_wr_en), .waddr(w_write_addr_op), .raddr(w_read_addr_op));
+  op_memory #(WIDTH,SIZE,LOGSIZE,P) om(.clk(clk), .data_in(conv_op), .data_out(m_data_out_y), .wr_en(w_valid_op), .waddr(w_write_addr_op), .raddr(w_read_addr_op));
 
-  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op), .send_addr(w_write_addr_op));
+  output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .hold_state(w_hold_state), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op), .send_addr(w_write_addr_op), .write_done(w_write_done));
 
 endmodule
 
