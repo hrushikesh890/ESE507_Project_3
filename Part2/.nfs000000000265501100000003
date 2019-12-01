@@ -13,7 +13,6 @@ module conv_8_4_8_3_f_rom(clk, addr, z);
 endmodule
 
 
-
 module memory(clk, data_in, data_out, addr, wr_en);
   parameter WIDTH=16, SIZE=64, LOGSIZE=6;
   input [WIDTH-1:0] data_in;
@@ -119,14 +118,12 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
         start_conv <= 1;
         //en_acc <= 0;
         //clr_acc <= 0;
-        delayclr <= 1;
+        delayclr <= 01;
       end
       if (start_conv) begin
         en_acc <= 1;
         if (delayclr) begin
         	clr_acc <= 0;
-        	delayclr <= 0;
-        end
         for (i = 0; i < P; i++) begin
           if ((m_addr_read_x[i] + 1) < (LENX - 1))
             m_addr_read_x[i] <= m_addr_read_x[i] + 1;
@@ -304,11 +301,11 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
         write_done <= 0;
       end
 
-      /*if (m_ready_y == 1 && m_valid_y) begin
+      if (m_ready_y == 1 && m_valid_y) begin
         if (read_addr < write_addr) begin
           read_addr <= read_addr + 1;
         end
-      end */
+      end
 
       if (read_addr == SIZE) begin
         read_addr <= 0;
@@ -324,20 +321,14 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
     end
   end
 
- always_ff  @(posedge clk) begin
+  always_comb begin
     if (reset)
-      m_valid_y <= 0;
+      m_valid_y = 0;
     else begin
       if ((read_addr < write_addr) && m_ready_y == 1 && write_addr != 0 && write_done == 0)
-        m_valid_y <= 1;
+        m_valid_y = 1;
       else
-        m_valid_y <= 0;
-      if (m_ready_y == 1 && m_valid_y) begin
-        if (read_addr < write_addr) begin
-          read_addr <= read_addr + 1;
-        end
-        m_valid_y <= 0;
-      end 
+        m_valid_y = 0;
     end
   end
 endmodule
