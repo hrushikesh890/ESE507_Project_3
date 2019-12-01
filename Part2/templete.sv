@@ -113,7 +113,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
           delayclr <= 0;
         end
         for (i = 0; i < P; i++) begin
-          if ((m_addr_read_x[i] + 1) < (LENX - 1))
+          if ((m_addr_read_x[i] + 1) <= (LENX - 1))
             m_addr_read_x[i] <= m_addr_read_x[i] + 1;
           m_addr_read_f <= m_addr_read_f + 1;
         end
@@ -390,6 +390,5 @@ module $modnamegen$(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op), .send_addr(w_write_addr_op), .write_done(w_write_done), .all_done(w_all_done));
 
 endmodule
-
 
 
