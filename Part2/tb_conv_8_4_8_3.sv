@@ -4,13 +4,14 @@ module conv_8_4_8_3_f_rom(clk, addr, z);
    output logic signed [7:0] z;
    always_ff @(posedge clk) begin
       case(addr)
-        0: z <= -8'd8;
-        1: z <= 8'd12;
-        2: z <= 8'd12;
-        3: z <= 8'd0;
+        0: z <= -8'd12;
+        1: z <= -8'd14;
+        2: z <= 8'd3;
+        3: z <= -8'd6;
       endcase
    end
 endmodule
+
 
 
 
@@ -124,11 +125,11 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       if (start_conv) begin
         en_acc <= 1;
         if (delayclr) begin
-        	clr_acc <= 0;
-        	delayclr <= 0;
+          clr_acc <= 0;
+          delayclr <= 0;
         end
         for (i = 0; i < P; i++) begin
-          if ((m_addr_read_x[i] + 1) < (LENX - 1))
+          if ((m_addr_read_x[i] + 1) <= (LENX - 1))
             m_addr_read_x[i] <= m_addr_read_x[i] + 1;
           m_addr_read_f <= m_addr_read_f + 1;
         end
@@ -173,7 +174,7 @@ module conv_control(reset, clk, m_addr_read_x, m_addr_read_f, conv_done, read_do
       end
       
       if (all_done)
-      	dis_conv_done <= 1;
+        dis_conv_done <= 1;
       
       if (read_done_x && conv_done == 1 && dis_conv_done == 1) begin
         conv_done <= 0;
@@ -282,7 +283,6 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
   output logic write_done, all_done;
   always_ff  @(posedge clk) begin
     if (reset) begin
-      read_addr <= 0;
       write_addr <= 0;
       wr_en <= 0;
       write_done <= 0;
@@ -311,7 +311,6 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
       end */
 
       if (read_addr == SIZE) begin
-        read_addr <= 0;
         write_addr <= 0;
         all_done <= 1;
         //m_valid_y <= 0; //change
@@ -325,8 +324,10 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
   end
 
  always_ff  @(posedge clk) begin
-    if (reset)
+    if (reset) begin
       m_valid_y <= 0;
+      read_addr <= 0;
+    end
     else begin
       if ((read_addr < write_addr) && m_ready_y == 1 && write_addr != 0 && write_done == 0)
         m_valid_y <= 1;
@@ -338,6 +339,9 @@ module output_control(clk, reset, conv_done, m_valid_y, m_ready_y, start_addr, v
         end
         m_valid_y <= 0;
       end 
+      if (read_addr == SIZE) begin
+        read_addr <= 0;
+      end
     end
   end
 endmodule
@@ -402,7 +406,6 @@ module conv_8_4_8_3(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y,
   output_control #(SIZE,P,LOGSIZE) oc(.clk(clk), .reset(reset), .conv_done(w_conv_done), .m_valid_y(m_valid_y), .m_ready_y(m_ready_y), .start_addr(w_start_addr), .valid_op(w_valid_op), .wr_en(w_wr_en), .read_addr(w_read_addr_op), .send_addr(w_write_addr_op), .write_done(w_write_done), .all_done(w_all_done));
 
 endmodule
-
 
 
 
