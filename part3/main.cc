@@ -247,7 +247,7 @@ void genAllLayers(int N, int M1, int M2, int M3, int T, int A, vector<int>& cons
     genLayer(L1, M2, T, P2, constVector2, subModName2, os);
 
     int L2 = L1-M2+1;
-    string subModName3 = "layer3_" + to_string(L2) + "_" + to_string(M2) + "_" + to_string(T) + "_" + to_string(P3);
+    string subModName3 = "layer3_" + to_string(L2) + "_" + to_string(M3) + "_" + to_string(T) + "_" + to_string(P3);
     genLayer(L2, M3, T, P3, constVector3, subModName3, os);
 
     // You will need to add code in the module at the top of this function to stitch together insantiations of these three modules
