@@ -4,15 +4,13 @@ module conv_8_4_8_3_f_rom(clk, addr, z);
    output logic signed [7:0] z;
    always_ff @(posedge clk) begin
       case(addr)
-        0: z <= -8'd12;
-        1: z <= -8'd14;
-        2: z <= 8'd3;
-        3: z <= -8'd6;
+        0: z <= -8'd2;
+        1: z <= 8'd6;
+        2: z <= -8'd13;
+        3: z <= 8'd9;
       endcase
    end
 endmodule
-
-
 
 
 module memory(clk, data_in, data_out, addr, wr_en);
@@ -409,7 +407,6 @@ endmodule
 
 
 
-
 module tb_conv_8_4_8_3();
 
     parameter T = 8;
@@ -427,7 +424,7 @@ module tb_conv_8_4_8_3();
     logic s;
 
     initial clk=0;
-    always #1 clk = ~clk;
+    always #5 clk = ~clk;
     
     conv_8_4_8_3 dut(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
 
@@ -471,7 +468,6 @@ module tb_conv_8_4_8_3();
 
     always @(posedge clk) begin
         if (m_ready_y && m_valid_y) begin
-        	$display("output %d",i);
             if (m_data_out_y !== expValues[i]) begin
                 $display($time,,"ERROR: y[%d] = %x; expected value = %x", i, m_data_out_y, expValues[i]);
                 errors = errors+1;
