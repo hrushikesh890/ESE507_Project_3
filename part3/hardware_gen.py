@@ -62,16 +62,16 @@ while(p3 < total - 2):
     while((l3%p3) != 0 and ((total - (p1 + p2 + p3)) >= 0)):
         p3 = p3+1
         
-p = [1,1,1]
+p = [best_p1,best_p2,best_p3]
 n = [n1,n2,n3]
 m = [m1,m2,m3]
 
 
-const_file_command = './testgen 2 ' + str(n1) + ' ' + str(m1) + ' ' + str(m2) + str(m3)  + str(width) + ' ' + str(total)
+const_file_command = './testgen 2 ' + str(n1) + ' ' + str(m1) + ' ' + str(m2) + ' ' +  str(m3) + ' '  + str(width) + ' ' + str(total)
 os.system(const_file_command)
 
-const_file_name = 'const_' + str(n1) + ' ' + str(m1) + ' ' + str(m2)+ ' ' + str(m3) + ' '  + str(width) + ' ' + str(total) + '.txt'
-generate_rom_command = './gen 2 ' + str(n1) + ' ' + str(m1) + ' ' + str(m2) + str(m3)  + str(width) + ' ' + str(total) +  " " + const_file_name
+const_file_name = 'const_' + str(n1) + '_' + str(m1) + '_' + str(m2)+ '_' + str(m3) + '_'  + str(width) + '_' + str(total) + '.txt'
+generate_rom_command = './gen 2 ' + str(n1) + ' ' + str(m1) + ' ' + str(m2) + ' ' + str(m3) + ' '  + str(width) + ' ' + str(total) +  ' ' + const_file_name
 os.system(generate_rom_command)
 
 rom1 = 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(1) + '_f_rom' 
@@ -79,7 +79,6 @@ rom2 = 'module layer2_' + str(n2) + '_' + str(m2) + '_' + str(width) + '_' + str
 rom3 = 'module layer3_' + str(n3) + '_' + str(m3) + '_' + str(width) + '_' + str(1) + '_f_rom' 
 
 rom_name = [rom1,rom2,rom3]
-print(rom_name)
 romname = 'multi_' + str(n1) + '_' + str(m1) + '_' + str(m2) + '_' + str(m3) + '_' + str(width) + '_' + str(total) +  '.sv'
 
 sRom = ''
@@ -89,6 +88,8 @@ with open(romname, 'r') as file:
     while rom:
         rom = file.readline()
         if (rom1 in rom):
+            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p1) + '_f_rom'
+            rom = file.readline()
             while('endmodule' not in rom):
                 sRom += rom
                 rom = file.readline()
@@ -97,6 +98,8 @@ with open(romname, 'r') as file:
         sRom = ''
         
         if (rom2 in rom):
+            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p2) + '_f_rom'
+            rom = file.readline()
             while('endmodule' not in rom):
                 sRom += rom
                 rom = file.readline()
@@ -105,6 +108,8 @@ with open(romname, 'r') as file:
         sRom = ''
         
         if (rom3 in rom):
+            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p3) + '_f_rom'
+            rom = file.readline()
             while('endmodule' not in rom):
                 sRom += rom
                 rom = file.readline()
