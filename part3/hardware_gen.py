@@ -8,11 +8,11 @@ args = parser.parse_args()
 
 os.system('make')
 def find_log_size(num):
-	start = math.log(num, 2)
+    start = math.log(num, 2)
 
-	if ((start - int(start)) != 0):
-		start += + 1
-	return int(start) 
+    if ((start - int(start)) != 0):
+        start += + 1
+    return int(start) 
 
 n1 = args.integers[1]
 m1 = args.integers[2]
@@ -138,6 +138,27 @@ for i in range(0,3):
   outputfile = open(filename, 'w+')
   outputfile.write(templete)
   outputfile.close()
+
+with open("top_temp.sv", 'r') as file:
+    temp_main = file.read()
+temp_main.replace('$WIDTH$', str(width))
+
+for i in range(0, 3):
+    sModname_rom = rom_name[i]
+    sModname_gen = "layer" + str(i+1) + "_" + str(n[i]) + "_" + str(m[i]) + "_" + str(width) + "_" + str(p[i])
+    replacestr = "$modname" + str(i+1) + "$"
+    temp_main.replace(replacestr, sModname_gen)
+
+with open(romname, 'r') as file:
+    rom = romname.readline()
+
+rom = rom[:-3]
+rom += str("(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y)\n")
+rom += temp_main
+out = open(romname, 'w+')
+out.write(rom)
+out.close
+
 
 """"tbname = "tb_conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t) + ".sv"
 
