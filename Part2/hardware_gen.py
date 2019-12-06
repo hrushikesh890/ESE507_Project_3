@@ -19,6 +19,7 @@ m = args.integers[1]
 width = args.integers[2]
 t = args.integers[3]
 
+
 const_file_command = './testgen 1 ' + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
 os.system(const_file_command)
 
@@ -33,21 +34,25 @@ sModname_rom = "conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t)
 sModname_gen = "conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t)
 
 #get template
-with open('templete.sv', 'r') as file:
-    templete = file.read()
+if (t == 1):
+	with open('templete1.sv', 'r') as file:
+		templete = file.read()
+else:
+	with open('templete.sv', 'r') as file:
+		templete = file.read()
 
 #get rom 
 romname = 'conv_' + str(n) + '_' + str(m) + '_' + str(width) + '_' + str(t) + '.sv'
 i = 0
 sRom = ''
 with open(romname, 'r') as file:
-    rom = file.readline()
-    i = 1
-    while rom:
-      rom = file.readline()
-      i += 1
-      if (i > 4):
-        sRom += rom 
+	rom = file.readline()
+	i = 1
+	while rom:
+		rom = file.readline()
+		i += 1
+		if (i > 4):
+			sRom += rom 
 
 templete = templete.replace('$$ROM$$', sRom).replace('$WIDTH$', str(width)).replace('$ADDRX$', str(addrx)).replace('$ADDRF$', str(addrf))
 templete = templete.replace('$N$', str(n)).replace('$M$', str(m)).replace('$P$', str(t))
@@ -61,8 +66,8 @@ outputfile.close()
 tbname = "tb_conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t) + ".sv"
 
 with open(tbname, 'r') as file:
-    tbfile = file.read()
-    
+	tbfile = file.read()
+	
 writecontent = templete + "\n" + tbfile
 tbench = open(tbname, 'w')
 tbench.write(writecontent)
