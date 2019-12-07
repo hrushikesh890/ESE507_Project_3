@@ -88,35 +88,41 @@ with open(romname, 'r') as file:
     while rom:
         rom = file.readline()
         if (rom1 in rom):
-            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p1) + '_f_rom'
-            rom = file.readline()
+            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p1) + '_f_rom' + '(clk, addr, z);\n'
             while('endmodule' not in rom):
-                sRom += rom
                 rom = file.readline()
-            sRom += 'endmodule'
+                sRom += rom
+            #sRom += 'endmodule'
             rom_list.append(sRom)
         sRom = ''
         
         if (rom2 in rom):
-            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p2) + '_f_rom'
-            rom = file.readline()
+            sRom += 'module layer2_' + str(n2) + '_' + str(m2) + '_' + str(width) + '_' + str(best_p2) + '_f_rom' + '(clk, addr, z);\n'
+            #rom = file.readline()
             while('endmodule' not in rom):
-                sRom += rom
                 rom = file.readline()
-            sRom += 'endmodule'
+                sRom += rom
+            #sRom += 'endmodule'
             rom_list.append(sRom)
         sRom = ''
         
         if (rom3 in rom):
-            sRom += 'module layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p3) + '_f_rom'
-            rom = file.readline()
+            sRom += 'module layer3_' + str(n3) + '_' + str(m3) + '_' + str(width) + '_' + str(best_p3) + '_f_rom' + '(clk, addr, z);\n'
+            #rom = file.readline()
             while('endmodule' not in rom):
-                sRom += rom
                 rom = file.readline()
-            sRom += 'endmodule'
+                sRom += rom
+            #sRom += 'endmodule'
             rom_list.append(sRom)
         sRom = ''
 #print(rom_list)
+
+
+rom1 = 'layer1_' + str(n1) + '_' + str(m1) + '_' + str(width) + '_' + str(best_p1) + '_f_rom' 
+rom2 = 'layer2_' + str(n2) + '_' + str(m2) + '_' + str(width) + '_' + str(best_p2) + '_f_rom' 
+rom3 = 'layer3_' + str(n3) + '_' + str(m3) + '_' + str(width) + '_' + str(best_p3) + '_f_rom' 
+
+rom_name = [rom1,rom2,rom3]
 
 for i in range(0,3):
 
@@ -127,8 +133,13 @@ for i in range(0,3):
   sModname_gen = "layer" + str(i+1) + "_" + str(n[i]) + "_" + str(m[i]) + "_" + str(width) + "_" + str(p[i])
   filename = 'layer' + str(i+1) + '_' + str(n[i]) + '_' + str(m[i]) +  '_' + str(width) + '_' + str(p[i]) +  '.sv'
 #get template
-  with open('templete.sv', 'r') as file:
-    templete = file.read()
+  if (p[i] == 1):
+	  with open('templete1.sv', 'r') as file:
+		  templete = file.read()
+  else:
+	  with open('templete.sv', 'r') as file:
+		  templete = file.read()
+
 
   templete = templete.replace('$$ROM$$', rom_list[i]).replace('$WIDTH$', str(width)).replace('$ADDRX$', str(addrx)).replace('$ADDRF$', str(addrf))
   templete = templete.replace('$N$', str(n[i])).replace('$M$', str(m[i])).replace('$P$', str(p[i]))
@@ -141,33 +152,37 @@ for i in range(0,3):
 
 with open("top_temp.sv", 'r') as file:
     temp_main = file.read()
-temp_main.replace('$WIDTH$', str(width))
+temp_main = temp_main.replace('$WIDTH$', str(width))
+print(temp_main)
 
 for i in range(0, 3):
-    sModname_rom = rom_name[i]
     sModname_gen = "layer" + str(i+1) + "_" + str(n[i]) + "_" + str(m[i]) + "_" + str(width) + "_" + str(p[i])
     replacestr = "$modname" + str(i+1) + "$"
-    temp_main.replace(replacestr, sModname_gen)
-
+    temp_main = temp_main.replace(replacestr, sModname_gen)
+ 
 with open(romname, 'r') as file:
-    rom = romname.readline()
+    rom = file.readline()
 
 rom = rom[:-3]
-rom += str("(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y)\n")
+rom += str("clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);\n")
 rom += temp_main
 out = open(romname, 'w+')
 out.write(rom)
 out.close
 
+for i in range(0,3):
+  vlog_file_command = 'vlog +acc ' + 'layer' + str(i+1) + '_' + str(n[i]) + '_' + str(m[i]) +  '_' + str(width) + '_' + str(p[i]) +  '.sv'
+  os.system(vlog_file_command)
 
-""""tbname = "tb_conv_" + str(n) + "_" + str(m) + "_" + str(width) + "_" + str(t) + ".sv"
+
+tbname = "tb_multi_" + str(n1) + "_" + str(m1) + "_" + str(m2) + "_" + str(m3)  + "_" + str(width) + "_" + str(total) + ".sv"
 
 with open(tbname, 'r') as file:
     tbfile = file.read()
     
-writecontent = templete + "\n" + tbfile
+writecontent = rom + "\n" + tbfile
 tbench = open(tbname, 'w')
-tbench.write(writecontent)"""""
+tbench.write(writecontent)
 
 '''sim_command = "./testlayer " + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
 os.system(sim_command)'''
