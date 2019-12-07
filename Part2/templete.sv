@@ -180,8 +180,10 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   logic signed [(2*WIDTH-1)+ADDR_F:0] w_addr_op;
   logic signed [WIDTH-1:0] w_real_mult_op;
   logic signed [WIDTH-1:0] w_real_addr_op;
-  logic signed [WIDTH-1:0] max_val = (2**(WIDTH-1))-1;
-  logic signed [WIDTH-1:0] min_val = -1 * (2**(WIDTH-1));
+  logic signed [WIDTH-1:0] max_val ;
+  logic signed [WIDTH-1:0] min_val;
+  assign max_val = (2**(WIDTH-1))-1;
+  assign min_val = -1 * (2**(WIDTH-1));
   logic signed [WIDTH-1:0] prev_output;
 
   always_comb begin

@@ -1,10 +1,5 @@
-#!/usr/bin/bash
-
-# ./testmodetwo N M1 M2 M3 T MULTS
-
-rm -rf work
-vlib work
-./testgen 2 $1 $2 $3 $4 $5 $6 
-./gen 2 $1 $2 $3 $4 $5 $6 const_$1_$2_$3_$4_$5_$6.txt 
-vlog multi_$1_$2_$3_$4_$5_$6.sv tb_multi_$1_$2_$3_$4_$5_$6.sv 
-vsim -c tb_multi_$1_$2_$3_$4_$5_$6 -do "run -all; quit"
+vlog +acc layer1_128_32_16_97.sv
+vlog +acc layer2_97_20_16_2.sv
+vlog +acc layer3_78_5_16_1.sv
+vlog +acc tb_multi_128_32_20_5_16_100.sv
+vsim tb_multi_128_32_20_5_16_100 -c -do "run -all"

@@ -153,7 +153,6 @@ for i in range(0,3):
 with open("top_temp.sv", 'r') as file:
     temp_main = file.read()
 temp_main = temp_main.replace('$WIDTH$', str(width))
-print(temp_main)
 
 for i in range(0, 3):
     sModname_gen = "layer" + str(i+1) + "_" + str(n[i]) + "_" + str(m[i]) + "_" + str(width) + "_" + str(p[i])
@@ -170,13 +169,15 @@ out = open(romname, 'w+')
 out.write(rom)
 out.close
 
+testlayer = ""
 for i in range(0,3):
-  vlog_file_command = 'vlog +acc ' + 'layer' + str(i+1) + '_' + str(n[i]) + '_' + str(m[i]) +  '_' + str(width) + '_' + str(p[i]) +  '.sv'
-  os.system(vlog_file_command)
+  vlog_file_command = 'vlog +acc ' + 'layer' + str(i+1) + '_' + str(n[i]) + '_' + str(m[i]) +  '_' + str(width) + '_' + str(p[i]) +  '.sv\n'
+  testlayer += vlog_file_command
+  #os.system(vlog_file_command)
 
 
 tbname = "tb_multi_" + str(n1) + "_" + str(m1) + "_" + str(m2) + "_" + str(m3)  + "_" + str(width) + "_" + str(total) + ".sv"
-
+testlayer += 'vlog +acc ' + tbname + '\n'
 with open(tbname, 'r') as file:
     tbfile = file.read()
     
@@ -184,6 +185,12 @@ writecontent = rom + "\n" + tbfile
 tbench = open(tbname, 'w')
 tbench.write(writecontent)
 
+testlayer += "vsim " + tbname[:-3] + ' -c -do "run -all"'
+
+out = open("testnetwork", 'w+')
+out.write(testlayer)
+out.close()
+os.system("chmod 777 testnetwork")
 '''sim_command = "./testlayer " + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
 os.system(sim_command)'''
 #print templete
