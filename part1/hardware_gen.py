@@ -67,6 +67,16 @@ writecontent = templete + "\n" + tbfile
 tbench = open(tbname, 'w')
 tbench.write(writecontent)
 
-'''sim_command = "./testlayer " + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
+test = 'vlog +acc ' + tbname + '\n'
+
+test+= "vsim " + tbname[:-3] + ' -c -do "run -all"'
+
+out = open("testlayer", 'w+')
+out.write(test)
+out.close()
+os.system("chmod 777 testlayer")
+print(test)
+
+''''sim_command = "./testlayer " + str(n) + ' ' + str(m) + ' ' + str(width) + ' ' + str(t)
 os.system(sim_command)'''
 #print templete

@@ -2,7 +2,7 @@
 # Setup: fill out the following parameters: name of clock signal, clock period (ns),
 # reset signal name (if used), name of top-level module, name of source file
 set CLK_NAME "clk";
-set CLK_PERIOD 1;
+set CLK_PERIOD 1.44;
 set RST_NAME "reset";
 set TOP_MOD_NAME "conv_16_4_16_1";
 set SRC_FILE "conv_16_4_16_1.sv";

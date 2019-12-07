@@ -1,7 +1,7 @@
 #@ # 
 #@ # Running dc_shell Version J-2014.09-SP5-2 for amd64 -- Jul 11, 2015
-#@ # Date:   Sun Nov 24 16:47:23 2019
-#@ # Run by: patilh@cadsrv2.ece.stonybrook.edu
+#@ # Date:   Fri Dec  6 23:59:08 2019
+#@ # Run by: oswaln@cadsrv2.ece.stonybrook.edu
 #@ 
 
 source /usr/local/synopsys/syn/admin/setup/.synopsys_dc.setup
@@ -3756,14 +3756,14 @@ source /usr/local/synopsys/syn/admin/setup/.synopsys_dc.setup
 #@ 
 #@ # -- End source /usr/local/synopsys/syn/admin/setup/.synopsys_dc.setup
 
-source -echo -verbose /home/home5/patilh/ese507work/proj3/ESE507_Project_3/part1/runsynth.tcl
-#@ # -- Starting source /home/home5/patilh/ese507work/proj3/ESE507_Project_3/part1/runsynth.tcl
+source -echo -verbose /home/home5/oswaln/nehul_ese507/Proj_3/ESE507_Project_3/part1/runsynth.tcl
+#@ # -- Starting source /home/home5/oswaln/nehul_ese507/Proj_3/ESE507_Project_3/part1/runsynth.tcl
 
 #@ ##############################################
 #@ # Setup: fill out the following parameters: name of clock signal, clock period (ns),
 #@ # reset signal name (if used), name of top-level module, name of source file
 #@ set CLK_NAME "clk";
-#@ set CLK_PERIOD 1;
+#@ set CLK_PERIOD 1.44;
 #@ set RST_NAME "reset";
 #@ set TOP_MOD_NAME "conv_16_4_16_1";
 #@ set SRC_FILE "conv_16_4_16_1.sv";

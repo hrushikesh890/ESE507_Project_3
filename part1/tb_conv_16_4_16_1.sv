@@ -4,10 +4,10 @@ module conv_16_4_16_1_f_rom(clk, addr, z);
    output logic signed [15:0] z;
    always_ff @(posedge clk) begin
       case(addr)
-        0: z <= 16'd181;
-        1: z <= -16'd214;
-        2: z <= -16'd57;
-        3: z <= 16'd172;
+        0: z <= -16'd134;
+        1: z <= 16'd184;
+        2: z <= 16'd166;
+        3: z <= -16'd166;
       endcase
    end
 endmodule
@@ -161,8 +161,10 @@ module convolutioner(clk, reset, m_addr_read_x, m_addr_read_f, m_data_out_y, en_
   logic signed [(2*WIDTH-1)+ADDR_F:0] w_addr_op;
   logic signed [WIDTH-1:0] w_real_mult_op;
   logic signed [WIDTH-1:0] w_real_addr_op;
-  logic signed [WIDTH-1:0] max_val = (2**(WIDTH-1))-1;
-  logic signed [WIDTH-1:0] min_val = -1 * (2**(WIDTH-1));
+  logic signed [WIDTH-1:0] max_val ;
+  logic signed [WIDTH-1:0] min_val;
+  assign max_val = (2**(WIDTH-1))-1;
+  assign min_val = -1 * (2**(WIDTH-1));
   logic signed [WIDTH-1:0] prev_output;
 
   always_comb begin
