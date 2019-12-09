@@ -1,5 +1,6 @@
-vlog +acc layer1_128_32_16_97.sv
-vlog +acc layer2_97_20_16_2.sv
-vlog +acc layer3_78_5_16_1.sv
-vlog +acc tb_multi_128_32_20_5_16_100.sv
-vsim tb_multi_128_32_20_5_16_100 -c -do "run -all"
+vlog +acc lib_conv.sv
+vlog +acc layer1_64_33_16_32.sv
+vlog +acc layer2_32_9_16_12.sv
+vlog +acc layer3_24_10_16_5.sv
+vlog +acc tb_multi_64_33_9_10_16_50.sv
+vsim tb_multi_64_33_9_10_16_50 -c -do "run -all"

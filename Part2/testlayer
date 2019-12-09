@@ -1,2 +1,2 @@
-vlog +acc tb_conv_64_33_16_16.sv
-vsim tb_conv_64_33_16_16 -c -do "run -all"
+vlog +acc tb_conv_64_33_16_8.sv
+vsim tb_conv_64_33_16_8 -c -do "run -all"

@@ -28,9 +28,9 @@ p2 = 1
 best_p3 = 1
 best_p1 = 1
 best_p2 = 1
-t1 = m1 + 3.0
-t2 = m2 + 3.0
-t3 = m3 + 3.0
+t1 = m1 + 2.0
+t2 = m2 + 2.0
+t3 = m3 + 2.0
 l1 = n1-m1+1
 l2 = n2-m2+1
 l3 = n3-m3+1
@@ -169,7 +169,7 @@ out = open(romname, 'w+')
 out.write(rom)
 out.close
 
-testlayer = ""
+testlayer = "vlog +acc lib_conv.sv\n"
 for i in range(0,3):
   vlog_file_command = 'vlog +acc ' + 'layer' + str(i+1) + '_' + str(n[i]) + '_' + str(m[i]) +  '_' + str(width) + '_' + str(p[i]) +  '.sv\n'
   testlayer += vlog_file_command

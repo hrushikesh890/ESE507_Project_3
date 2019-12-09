@@ -456,7 +456,8 @@ module tb_conv_64_33_16_2();
 
     initial clk=0;
     always #5 clk = ~clk;
-    
+    assign s_valid_x = 1;
+    assign m_ready_y = 1;
     conv_64_33_16_2 dut(clk, reset, s_data_in_x, s_valid_x, s_ready_x, m_data_out_y, m_valid_y, m_ready_y);
 
     logic rb, rb2;
@@ -475,12 +476,12 @@ module tb_conv_64_33_16_2();
             s_data_in_x = 'x;
     end
 
-    always @* begin
+   /* always @* begin
         if ((j>=0) && (j<NUMINPUTVALS) && (rb==1'b1))
             s_valid_x=1;
         else
             s_valid_x=0;
-    end
+    end*/
 
     always @(posedge clk) begin
         if (s_valid_x && s_ready_x)
@@ -488,12 +489,12 @@ module tb_conv_64_33_16_2();
     end
   
     logic [31:0] i;
-    always @* begin
+    /*always @* begin
         if ((i>=0) && (i<NUMOUTPUTVALS) && (rb2==1'b1))
             m_ready_y = 1;
         else
             m_ready_y = 0;
-    end
+    end*/
 
     integer errors = 0;
 
@@ -516,7 +517,7 @@ module tb_conv_64_33_16_2();
         j=0; i=0;
 
         // Before first clock edge, initialize
-        m_ready_y = 0; 
+        //m_ready_y = 0; 
         reset = 0;
     
         // reset
